@@ -1,0 +1,23 @@
+{
+  "recommendations": [
+    "rust-lang.rust-analyzer",
+    "formulahendry.auto-close-tag",
+    "vadimcn.vscode-lldb",
+    "fill-labs.dependi",
+    "hongquan.dragon-jinja",
+    "usernamehw.errorlens",
+    "mhutchie.git-graph",
+    "oderwat.indent-rainbow",
+    "corschenzi.mermaid-graphical-editor",
+    "esbenp.prettier-vscode",
+    "humao.rest-client",
+    "formulahendry.auto-complete-tag",
+    "formulahendry.auto-rename-tag",
+    "ztamasfe.even-better-toml",
+    "shardulm94.trailing-spaces",
+    "ritwickdey.liveserver",
+    "bierner.markdown-preview-github-styles",
+    "davidanson.vscode-markdownlint",
+    "yzhang.markdown-all-in-one"
+  ]
+}

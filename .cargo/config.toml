@@ -1,0 +1,13 @@
+[build]
+target-dir = "target"
+
+[alias]
+fmt-check = "fmt --all -- --check"
+lint = "clippy --workspace --all-targets --all-features"
+lint-strict = "clippy --workspace --all-targets --all-features -D warnings"
+test-all = "test --workspace --all-features"
+doc-all = "doc --workspace --no-deps --all-features"
+
+# カバレッジ(CI/ローカル)を 'cargo cov' で呼べるようにする（cargo-llvm-covが必要）
+cov = "llvm-cov --workspace --all-features --lcov --output-path lcov.info"
+cov-html = "llvm-cov --workspace --all-features --html"

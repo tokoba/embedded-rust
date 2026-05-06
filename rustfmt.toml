@@ -1,0 +1,11 @@
+# stable
+edition = "2024"
+
+## インデントと空白の設定
+tab_spaces = 2
+max_width = 100
+chain_width = 100
+use_small_heuristics = "Default"
+single_line_if_else_max_width = 50
+single_line_let_else_max_width = 100
+short_array_element_width_threshold = 10

@@ -1,0 +1,40 @@
+# nextest configuration for the shimai-common project
+nextest-version = "0.9.5"
+experimental = []
+
+[profile.default]
+default-filter = "all()"
+test-threads = "num-cpus"
+
+# Display test execution status with color
+status-level = "pass"
+# Don't stop on the first failure
+fail-fast = false
+# No retries by default (let CI handle retries)
+retries = 0
+# Test timeout of 5 minutes per test
+test-timeout = "300s"
+# Consider tests taking longer than 30s as "slow"
+slow-time = "30s"
+# Use all available CPU cores
+# This will be automatically determined by nextest
+failures-output = "immediate-final"
+success-output = "never"
+
+[profile.ci]
+# CI-specific settings
+inherit = "default"
+# In CI, show all passing tests for better visibility
+status-level = "all"
+# Longer timeout for CI environment
+test-timeout = "300s"
+# Consider tests taking longer than 60s as slow in CI
+slow-time = "60s"
+# No retries in CI - we want to see flaky tests
+retries = 0
+
+# Test filtering examples
+# You can run specific tests with:
+# cargo nextest run -E 'package(shimai-common) and test(/hash/)'
+# cargo nextest run -E 'test(/integration/)'
+# cargo nextest run -E 'not test(/slow/)'

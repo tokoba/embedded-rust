@@ -1,0 +1,40 @@
+target
+**/target/*
+target/
+**/target/*
+Cargo.lock
+# package-lock.json # If using npm
+# yarn.lock # If using yarn
+# pnpm-lock.yaml # If using pnpm
+
+# IDE / Editor configuration
+# .vscode/
+.idea/
+
+# OS generated files
+.DS_Store
+Thumbs.db
+desktop.ini
+
+# Environment variables
+.env
+.env.*
+
+# Logs
+*.log
+logs/
+
+# Test reports and coverage
+coverage/
+*.lcov
+report/
+test-results/
+
+# Build artifacts (e.g., Wasm)
+pkg/
+wasm/
+dist/
+build/
+
+# Generated files (if any)
+# src/generated/

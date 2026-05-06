@@ -1,0 +1,171 @@
+{
+  "code-block-style": {
+    "style": "fenced"
+  },
+  "code-fence-style": {
+    "style": "backtick"
+  },
+  "emphasis-style": {
+    "style": "asterisk"
+  },
+  "extended-ascii": {
+    "ascii-only": false
+  },
+  "fenced-code-language": {
+    "allowed_languages": [
+      "asm",
+      "bash",
+      "c",
+      "c++",
+      "cc",
+      "cmake",
+      "conf",
+      "config",
+      "cpp",
+      "cs",
+      "csv",
+      "csharp",
+      "css",
+      "cxx",
+      "diff",
+      "docker",
+      "dockerfile",
+      "dotenv",
+      "elixir",
+      "env",
+      "ex",
+      "exs",
+      "fs",
+      "fsharp",
+      "go",
+      "gql",
+      "graphql",
+      "h",
+      "haskell",
+      "hpp",
+      "hs",
+      "html",
+      "ini",
+      "java",
+      "javascript",
+      "json",
+      "kotlin",
+      "kt",
+      "llvm",
+      "log",
+      "lua",
+      "make",
+      "makefile",
+      "markdown",
+      "mermaid",
+      "md",
+      "ml",
+      "ocaml",
+      "patch",
+      "perl",
+      "php",
+      "pl",
+      "plaintext",
+      "powershell",
+      "properties",
+      "proto",
+      "protobuf",
+      "ps1",
+      "psm1",
+      "py",
+      "python",
+      "r",
+      "rb",
+      "rs",
+      "ruby",
+      "rust",
+      "s",
+      "sass",
+      "scala",
+      "scss",
+      "sh",
+      "shell",
+      "sql",
+      "swift",
+      "text",
+      "toml",
+      "ts",
+      "tsx",
+      "txt",
+      "typescript",
+      "xaml",
+      "xml",
+      "yaml",
+      "yml",
+      "zsh"
+    ],
+    "language_only": true
+  },
+  "heading-style": {
+    "style": "atx"
+  },
+  "hr-style": {
+    "style": "---"
+  },
+  "line-length": {
+    "line_length": 1000,
+    "code_block_line_length": 160,
+    "heading_line_length": 120,
+    "tables": true,
+    "headings": true,
+    "stern": false,
+    "strict": false,
+    "code_blocks": false
+  },
+  "link-image-style": {
+    "collapsed": false,
+    "shortcut": false,
+    "url_inline": false
+  },
+  "no-duplicate-heading": {
+    "siblings_only": true
+  },
+  "proper-names": {
+    "code_blocks": false,
+    "names": [
+      "Cake.Markdownlint",
+      "CommonMark",
+      "JavaScript",
+      "Markdown",
+      "markdown-it",
+      "markdownlint",
+      "Node.js"
+    ]
+  },
+  "reference-links-images": {
+    "shortcut_syntax": true,
+    "enabled": false
+  },
+  "strong-style": {
+    "style": "asterisk"
+  },
+  "ul-style": {
+    "style": "dash",
+    "enabled": true
+  },
+  "ol-prefix": {
+    "enabled": false
+  },
+  "no-emphasis-as-heading": false,
+  "table-column-style": false,
+  "heading-increment": false,
+  "list-indent": false,
+  "ul-indent": false,
+  "no-trailing-spaces": false,
+  "no-hard-tabs": true,
+  "no-reversed-links": false,
+  "no-multiple-blanks": true,
+  "table-pipe-style": false,
+  "table-column-count": false,
+  "table-cell-padding": false,
+  "table-header-indent": false,
+  "no-blanks-blockquote": false,
+  "no-inline-html": false,
+  "single-h1": false,
+  "single-title": false
+}

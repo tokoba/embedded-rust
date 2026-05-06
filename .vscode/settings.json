@@ -1,0 +1,119 @@
+{
+  "[json]": {
+    "editor.quickSuggestions": {
+      "strings": true
+    },
+    "editor.defaultFormatter": "esbenp.prettier-vscode",
+    "editor.suggest.insertMode": "replace",
+    "editor.formatOnPaste": true,
+    "editor.formatOnSave": true,
+    "editor.formatOnType": true,
+    "editor.formatOnSaveMode": "file"
+  },
+  "[rust]": {
+    "editor.defaultFormatter": "rust-lang.rust-analyzer",
+    "editor.formatOnPaste": true,
+    "editor.formatOnSave": true,
+    "editor.formatOnType": true,
+    "editor.formatOnSaveMode": "file"
+  },
+  "[toml]": {
+    "editor.defaultFormatter": "tamasfe.even-better-toml",
+    "editor.formatOnPaste": true,
+    "editor.formatOnSave": true,
+    "editor.formatOnType": true,
+    "editor.formatOnSaveMode": "file"
+  },
+  "files.eol": "\n",
+  "files.encoding": "utf8",
+  "editor.insertSpaces": true,
+  "editor.tabSize": 2,
+  // 末尾の空白を削除
+  "files.trimTrailingWhitespace": true,
+
+  // --- Rust Analyzer 設定 ---
+  // 保存時に `clippy` を実行してコードをチェック
+  "rust-analyzer.check.command": "clippy",
+  "rust-analyzer.checkOnSave": true,
+  // `clippy` に渡す追加の引数（すべての機能を有効にする）
+  // "rust-analyzer.check.extraArgs": ["--all-features"], // 重複 "rust-analyzer.cargo.features": "all"
+  // プロシージャルマクロのサポートを有効化
+  "rust-analyzer.procMacro.enable": true,
+  // Rust Analyzer が認識する Cargo の features を指定
+  "rust-analyzer.cargo.features": "all",
+  // 診断情報（エラーや警告）の表示を有効化
+  "rust-analyzer.diagnostics.enable": true,
+  // 不足しているインポートを自動的に補完候補に追加
+  "rust-analyzer.completion.autoimport.enable": true,
+
+  // Rust Analyzer: ホバーとレンズ機能
+  // ホバー時にアクション（例: 定義へ移動）を表示
+  "rust-analyzer.hover.actions.enable": true,
+  // ホバー時にドキュメントを表示
+  "rust-analyzer.hover.documentation.enable": true,
+  // コードレンズ（参照カウント、実装など）を表示
+  "rust-analyzer.lens.enable": true,
+
+  // Rust Analyzer: インレイヒント（コード中に補助情報を表示）
+  // 型ヒントを表示
+  "rust-analyzer.inlayHints.typeHints.enable": true,
+  // パラメータ名ヒントを表示
+  "rust-analyzer.inlayHints.parameterHints.enable": true,
+  // メソッドチェーンの型ヒントを表示
+  "rust-analyzer.inlayHints.chainingHints.enable": true,
+  // 再借用（reborrow）ヒントを表示
+  "rust-analyzer.inlayHints.reborrowHints.enable": "always",
+  // クロージャの戻り値型ヒントを表示
+  "rust-analyzer.inlayHints.closureReturnTypeHints.enable": "always",
+  // 変数の束縛モード（`mut` など）ヒントを表示
+  "rust-analyzer.inlayHints.bindingModeHints.enable": true,
+  // ライフタイム省略（elision）ヒントを表示
+  "rust-analyzer.inlayHints.lifetimeElisionHints.enable": "always",
+  // ライフタイム省略ヒントでパラメータ名を使用
+  "rust-analyzer.inlayHints.lifetimeElisionHints.useParameterNames": true,
+  // rust-analyzerによるセマンティックハイライト
+  "rust-analyzer.semanticHighlighting.operator.enable": true,
+  "rust-analyzer.semanticHighlighting.doc.comment.inject.enable": true,
+  "rust-analyzer.semanticHighlighting.nonStandardTokens": true,
+  "rust-analyzer.semanticHighlighting.strings.enable": true,
+  "rust-analyzer.semanticHighlighting.operator.specialization.enable": true,
+  "rust-analyzer.semanticHighlighting.punctuation.enable": true,
+  "rust-analyzer.semanticHighlighting.punctuation.separate.macro.bang": true,
+  "rust-analyzer.semanticHighlighting.punctuation.specialization.enable": true,
+
+  // --- エディタ全般設定 ---
+  // 保存時にファイルをフォーマット
+  "editor.formatOnSave": true,
+  // ペースト時にフォーマット
+  "editor.formatOnPaste": true,
+  // 入力中に自動でフォーマット（必要に応じて false に変更）
+  "editor.formatOnType": true,
+  // セマンティックハイライト（変数や関数などを意味に基づいて色分け）を有効化
+  "editor.semanticHighlighting.enabled": true,
+  // 対応する括弧のペアにガイド線を表示
+  "editor.guides.bracketPairs": true,
+  // 対応する括弧のペアを色分け
+  "editor.bracketPairColorization.enabled": true,
+  // スクロール時に現在のスコープ（関数定義など）をエディタ上部に固定表示
+  "editor.stickyScroll.enabled": true,
+
+  // 保存時の自動アクション
+  "editor.codeActionsOnSave": {
+    // 利用可能なすべての修正を適用
+    "source.fixAll": "always",
+    // インポート文を整理
+    "source.organizeImports": "always"
+  },
+
+  // 補完候補の動作設定
+  // Enter キーで補完候補を受け入れる
+  "editor.acceptSuggestionOnEnter": "on",
+  // 最初に表示される補完候補をデフォルトで選択状態にする
+  "editor.suggestSelection": "first",
+  // Tab キーによる補完候補の選択を有効化
+  "editor.tabCompletion": "on",
+
+  // --- デバッグ設定 ---
+  // どこにでもブレークポイントを設定できるようにする
+  "debug.allowBreakpointsEverywhere": true
+}

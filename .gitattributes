@@ -1,0 +1,8 @@
+# Linux, WLS 環境用に LF で基本的には統一する
+* text=auto eol=lf
+# bat, cmd ファイルは Windows 環境で動作するように CRLF が必要
+*.bat text eol=crlf
+*.cmd text eol=crlf
+
+*.png binary
+*.jpg binary

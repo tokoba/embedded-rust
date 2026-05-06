@@ -1,0 +1,15 @@
+{
+  "permissions": {
+    "allow": [
+      "mcp__web-search__webSearchPrime",
+      "mcp__docs-rs__docs_rs_readme",
+      "mcp__docs-rs__docs_rs_search_crates",
+      "mcp__web-reader__webReader",
+      "Bash(./nextest.sh --doctests-only)"
+    ]
+  },
+  "enableAllProjectMcpServers": true,
+  "enabledMcpjsonServers": [
+    "docs-rs"
+  ]
+}
