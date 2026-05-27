@@ -13,7 +13,7 @@
     "humao.rest-client",
     "formulahendry.auto-complete-tag",
     "formulahendry.auto-rename-tag",
-    "ztamasfe.even-better-toml",
+    "tamasfe.even-better-toml",
     "shardulm94.trailing-spaces",
     "ritwickdey.liveserver",
     "bierner.markdown-preview-github-styles",
