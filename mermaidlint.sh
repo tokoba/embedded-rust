@@ -1,2 +1,2 @@
 #!/bin/bash
-mermaid-validate "**/*.md"
+mermaid-validate -q "**/*.md"
