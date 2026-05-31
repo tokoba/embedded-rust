@@ -4,7 +4,7 @@
 #[cfg(all(test, not(target_os = "none")))]
 extern crate std;
 
-// button_fsm は HAL/Embassy 非依存の純粋ロジックなので host/embedded の両方で公開する。
+#[cfg(all(target_arch = "arm", target_os = "none"))]
 pub mod button_fsm;
 
 #[cfg(all(target_arch = "arm", target_os = "none"))]
