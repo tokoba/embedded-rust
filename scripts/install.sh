@@ -109,16 +109,19 @@ else
 fi
 
 # ============================================================================
-# 6. オプション: Node.js ツール (Markdownリント用)
+# 6. オプション: Node.js ツール (Markdown & Mermaid リント用)
 # ============================================================================
 section "オプションツール確認"
 
 if command -v npm &>/dev/null; then
-  info "npm が見つかりました。markdownlint-cli2 をインストール中..."
+  info "npm が見つかりました。オプションツールをインストール中..."
+  info "markdownlint-cli2 をインストール中..."
   npm install -g markdownlint-cli2 2>/dev/null || warn "markdownlint-cli2 のインストールに失敗しました"
+  info "mermaid-validate をインストール中..."
+  npm install -g mermaid-validate 2>/dev/null || warn "mermaid-validate のインストールに失敗しました"
 else
-  warn "npm が見つかりません。markdownlint-cli2 はスキップします。"
-  warn "Markdown リントを使用する場合は Node.js をインストールしてください。"
+  warn "npm が見つかりません。markdownlint-cli2 と mermaid-validate はスキップします。"
+  warn "Markdown リントや Mermaid バリデーションを使用する場合は Node.js をインストールしてください。"
 fi
 
 # ============================================================================
@@ -136,6 +139,8 @@ echo "  - cargo-size:   $(cargo size --version 2>/dev/null || echo 'Not found')"
 echo "  - cargo-bloat:  $(cargo bloat --version 2>/dev/null || echo 'Not found')"
 echo "  - cargo-nextest:$(cargo nextest --version 2>/dev/null || echo 'Not found')"
 echo "  - probe-rs:     $(probe-rs --version 2>/dev/null || echo 'Not found')"
+echo "  - markdownlint-cli2: $(markdownlint-cli2 --version 2>/dev/null || echo 'Not found')"
+echo "  - mermaid-validate:  $(mermaid-validate --version 2>/dev/null || echo 'Not found')"
 echo ""
 
 echo "${BOLD}インストール済みターゲット:${RESET}"
