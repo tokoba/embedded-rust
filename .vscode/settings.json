@@ -37,8 +37,8 @@
   // 主開発ターゲット（補完・型推論・go-to-def に影響）
   // embedded 作業時: "thumbv7em-none-eabihf"
   // host テスト作業時: null に変更
-  "rust-analyzer.cargo.target": "thumbv7em-none-eabihf",
-  // "rust-analyzer.cargo.target": null,
+  // "rust-analyzer.cargo.target": "thumbv7em-none-eabihf",
+  "rust-analyzer.cargo.target": null,
 
   // --- Rust Analyzer: 診断 (flycheck) ---
   // overrideCommand で embedded/host 両方の clippy 診断を取得

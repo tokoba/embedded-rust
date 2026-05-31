@@ -78,13 +78,7 @@ impl ButtonFsm {
   }
 
   /// 物理的なイベントを処理する
-  pub fn on_event(
-    &mut self,
-    event: PhysicalEvent,
-    now_ms: u64,
-    _debounce_ms: u64,
-    _long_press_ms: u64,
-  ) -> Option<ButtonEvent> {
+  pub fn on_event(&mut self, event: PhysicalEvent, now_ms: u64) -> Option<ButtonEvent> {
     match (self.state, event) {
       (ButtonFsmState::Idle, PhysicalEvent::RisingEdge) => {
         self.state = ButtonFsmState::DebouncingPress;
@@ -149,7 +143,7 @@ mod tests {
       (PhysicalEvent::FallingEdge, DEBOUNCE_MS + 100),
       (PhysicalEvent::Timeout, DEBOUNCE_MS + 100 + DEBOUNCE_MS),
     ] {
-      if let Some(e) = fsm.on_event(event, time, DEBOUNCE_MS, LONG_PRESS_MS) {
+      if let Some(e) = fsm.on_event(event, time) {
         events.push(e);
       }
     }
@@ -174,7 +168,7 @@ mod tests {
         DEBOUNCE_MS + LONG_PRESS_MS + 100 + DEBOUNCE_MS,
       ),
     ] {
-      if let Some(e) = fsm.on_event(event, time, DEBOUNCE_MS, LONG_PRESS_MS) {
+      if let Some(e) = fsm.on_event(event, time) {
         events.push(e);
       }
     }
@@ -191,7 +185,7 @@ mod tests {
       (PhysicalEvent::FallingEdge, 10),
       (PhysicalEvent::Timeout, DEBOUNCE_MS),
     ] {
-      if let Some(e) = fsm.on_event(event, time, DEBOUNCE_MS, LONG_PRESS_MS) {
+      if let Some(e) = fsm.on_event(event, time) {
         events.push(e);
       }
     }
@@ -208,7 +202,7 @@ mod tests {
       (PhysicalEvent::Timeout, DEBOUNCE_MS),
       (PhysicalEvent::Timeout, DEBOUNCE_MS + LONG_PRESS_MS),
     ] {
-      if let Some(e) = fsm.on_event(event, time, DEBOUNCE_MS, LONG_PRESS_MS) {
+      if let Some(e) = fsm.on_event(event, time) {
         events.push(e);
       }
     }
