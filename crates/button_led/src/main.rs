@@ -5,7 +5,9 @@
 
 use core::default::Default;
 
-use button_led::button_fsm::{ButtonEvent, ButtonState, DEBOUNCE_MS, LONG_PRESS_MS};
+use button_led::button_fsm::{
+  ButtonEvent, ButtonFsm, ButtonFsmState, ButtonState, DEBOUNCE_MS, LONG_PRESS_MS, PhysicalEvent,
+};
 use button_led::led::*;
 use defmt::*;
 use embassy_executor::Spawner;
@@ -81,11 +83,21 @@ async fn led_task(pb0: Peri<'static, PB0>, pb7: Peri<'static, PB7>, pb14: Peri<'
   }
 }
 
+/// FSMにイベントを送信し、ButtonEventが発生した場合はチャンネルに転送する
+async fn process_fsm_event(fsm: &mut ButtonFsm, event: PhysicalEvent, now_ms: u64) {
+  if let Some(button_event) = fsm.on_event(event, now_ms) {
+    BUTTON_CH.send(button_event).await;
+    info!("[Button] FSM event: {}", button_event);
+  }
+}
+
 /// 汎用ボタン監視タスク
 /// Embassy タスクは 'static ライフタイムの引数のみ受け付けるため、
 /// 必要なペリフェラルピンを個別に受け取る
 #[embassy_executor::task]
 async fn button_watcher_task(mut button: ExtiInput<'static, Async>, name: &'static str) {
+  let mut fsm = ButtonFsm::new(ButtonFsmState::Idle);
+
   let mut button_state = if button.is_low() {
     ButtonState::Released
   } else {
@@ -101,21 +113,39 @@ async fn button_watcher_task(mut button: ExtiInput<'static, Async>, name: &'stat
   info!("Press the {} button...", name);
 
   loop {
-    /* Active High (ボタン押下時にHigh) */
-    button.wait_for_rising_edge().await;
-    button_state = ButtonState::Pressed;
-    info!("[Button] Current: {}", button_state);
+    if button_state == ButtonState::Released {
+      // ボタンが押されていないときは，押下イベントを待つ
+      /* Active High (ボタン押下時にHigh) */
+      button.wait_for_rising_edge().await;
+      button_state = ButtonState::Pressed;
+      info!("[Button] Current: {}", button_state);
+
+      info!("Checking button press type: Short Press or Long Press");
+    } else {
+      // ボタンがすでに押されているときは，リリースイベントを待つ
+      // 最初からボタンが押された状態スタートとする
+      info!("{}: Started with Pressed state!", name); /* ボタン押下は確定 */
+    }
+
+    /* FSM: 立ち上がりエッジ → DebouncingPress */
+    let now = Instant::now().as_millis();
+    process_fsm_event(&mut fsm, PhysicalEvent::RisingEdge, now).await;
+
     /* チャタリング対策の待ち */
     Timer::after(Duration::from_millis(DEBOUNCE_MS)).await;
+
     /* 待ち時間後にI/O再確認(ここは割り込みではなくタスクでReadする) */
     if button.is_high() {
       /* 現在も押されている状態継続と判断。
-      この時点で少なくとも短い押下は確定しているのでイベントを発行する。
-      次の処理に進む */
-      BUTTON_CH.send(ButtonEvent::ShortPress).await; /* 短い押下確定 */
+      FSM: タイムアウト → Pressed, ShortPress発行 */
+      let now = Instant::now().as_millis();
+      process_fsm_event(&mut fsm, PhysicalEvent::Timeout, now).await;
       info!("[Button] Short Pressed");
     } else {
       /* 一定時間後にlowになっているのでチャタリングと判断(ノイズ扱い) */
+      /* FSM: 立ち下がりエッジ → Idle（ノイズ除去） */
+      let now = Instant::now().as_millis();
+      process_fsm_event(&mut fsm, PhysicalEvent::FallingEdge, now).await;
       button_state = ButtonState::Released;
       info!("[Button] Current: {}", button_state);
       continue; /* 無視する */
@@ -123,16 +153,15 @@ async fn button_watcher_task(mut button: ExtiInput<'static, Async>, name: &'stat
 
     info!("{}: Pressed!", name); /* ボタン押下は確定 */
     let button_press_start_time = Instant::now(); /* ボタン押下開始判定時刻 */
-    // let mut elapsed: Duration = Duration::from_millis(0); /* 経過時間。初期値は0 */
-    // let _ = elapsed; // 使ったことにする
     let mut long_press_detected = false;
 
-    info!("Checking button press type: Short Press or Long Press");
     loop {
       let elapsed = Instant::now() - button_press_start_time; /* 経過時間 */
       if elapsed > Duration::from_millis(LONG_PRESS_MS) {
         long_press_detected = true;
-        BUTTON_CH.send(ButtonEvent::LongPress).await; /* ここでイベントは発行する */
+        /* FSM: タイムアウト → LongPressDetected, LongPress発行 */
+        let now = Instant::now().as_millis();
+        process_fsm_event(&mut fsm, PhysicalEvent::Timeout, now).await;
         info!("[Button] Long Pressed");
         break; /* 長押し確定 */
         /* この後も長押し状態からのリリース待ち状態に遷移する */
@@ -152,24 +181,35 @@ async fn button_watcher_task(mut button: ExtiInput<'static, Async>, name: &'stat
         /* リリース or 長押しのどちらかのイベントは必ず発生する */
         /* リリースが先の場合の条件分岐 */
         Either::First(_) => {
+          /* FSM: 立ち下がりエッジ → DebouncingReleaseFromPress */
+          let now = Instant::now().as_millis();
+          process_fsm_event(&mut fsm, PhysicalEvent::FallingEdge, now).await;
+
           /* リリース時も機械的なチャタリング対策待ち */
           Timer::after(Duration::from_millis(DEBOUNCE_MS)).await;
           if button.is_low() {
             /* ボタンリリース継続のため，ボタンリリース確定とする */
+            /* FSM: タイムアウト → Idle, Released発行 */
+            let now = Instant::now().as_millis();
+            process_fsm_event(&mut fsm, PhysicalEvent::Timeout, now).await;
             button_state = ButtonState::Released;
             info!("[Button] Current: {}", button_state);
-            BUTTON_CH.send(ButtonEvent::Released).await; /* リリース確定 */
             info!("[Button] Released After Short Pressed");
             break;
           } else {
             /* リリース判定は誤検知で単なるチャタリングと認定 */
+            /* FSM: 立ち上がりエッジ → Pressed に復帰 */
+            let now = Instant::now().as_millis();
+            process_fsm_event(&mut fsm, PhysicalEvent::RisingEdge, now).await;
             continue;
           }
         }
         Either::Second(_) => {
           /* 長押しの場合，一発で確定してよい */
           long_press_detected = true;
-          BUTTON_CH.send(ButtonEvent::LongPress).await; /* ここでイベントは発行する */
+          /* FSM: タイムアウト → LongPressDetected, LongPress発行 */
+          let now = Instant::now().as_millis();
+          process_fsm_event(&mut fsm, PhysicalEvent::Timeout, now).await;
           info!("[Button] Long Pressed");
           break; /* 長押し確定でループを抜け、リリース待ちに遷移する */
         }
@@ -184,16 +224,25 @@ async fn button_watcher_task(mut button: ExtiInput<'static, Async>, name: &'stat
     /* 長押しの場合はさらに継続してリリースを確認する */
     loop {
       button.wait_for_falling_edge().await;
+      /* FSM: 立ち下がりエッジ → DebouncingReleaseFromLongPress */
+      let now = Instant::now().as_millis();
+      process_fsm_event(&mut fsm, PhysicalEvent::FallingEdge, now).await;
+
       Timer::after(Duration::from_millis(DEBOUNCE_MS)).await;
       if button.is_low() {
         /* ボタンリリース確定 */
+        /* FSM: タイムアウト → Idle, Released発行 */
+        let now = Instant::now().as_millis();
+        process_fsm_event(&mut fsm, PhysicalEvent::Timeout, now).await;
         button_state = ButtonState::Released;
         info!("[Button] Current: {}", button_state);
-        BUTTON_CH.send(ButtonEvent::Released).await; /* 長押しの後のリリース */
         info!("[Button] Released After Long Pressed");
         break; /* 長押し後のリリース確定でループを抜け、最初の押下待ちに戻る */
       } else {
         /* チャタリングと判定。リリースは誤検知なので無視 */
+        /* FSM: 立ち上がりエッジ → LongPressDetected に復帰 */
+        let now = Instant::now().as_millis();
+        process_fsm_event(&mut fsm, PhysicalEvent::RisingEdge, now).await;
         continue; /* 長押しの後のリリース待ち継続 */
       }
     }
