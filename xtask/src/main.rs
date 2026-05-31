@@ -42,6 +42,8 @@ enum Commands {
   Ci,
   /// Print host-testable packages detected by xtask.
   ListHostPackages,
+  /// rust-analyzer fly check 実施: embedded + host 両方 clippy でチェックする
+  FlyCheck,
 }
 
 fn main() -> Result<()> {
@@ -63,6 +65,7 @@ fn main() -> Result<()> {
       }
       Ok(())
     }
+    Commands::FlyCheck => fly_check(),
   }
 }
 
@@ -236,5 +239,51 @@ fn run_owned(program: &str, args: &[String]) -> Result<()> {
   if !status.success() {
     bail!("command failed: {} {}", program, args.join(" "));
   }
+  Ok(())
+}
+
+/// rust-analyzer の flycheck 用。
+/// embedded (bins) と host (lib+tests) の両方で clippy を実行し、
+/// JSON 診断メッセージを stdout に出力する。
+///
+/// 重要: stdout には clippy の JSON 出力のみを流す。
+/// 人間向けメッセージは stderr に出力するか省略する。
+fn fly_check() -> Result<()> {
+  // 1. Embedded clippy: workspace 全体の bins を検査
+  let _ = Command::new("cargo")
+    .args([
+      "clippy",
+      "--workspace",
+      "--exclude",
+      "xtask",
+      "--target",
+      EMBEDDED_TARGET,
+      "--no-default-features",
+      "--bins",
+      "--message-format=json",
+      "--",
+      "-D",
+      "warnings",
+    ])
+    .status(); // exit code は無視（両方実行するため）
+
+  // 2. Host clippy: host-testable パッケージの lib + tests を検査
+  let pkgs = host_testable_packages()?;
+  if !pkgs.is_empty() {
+    let mut args: Vec<String> = vec!["clippy".into()];
+    add_package_args(&mut args, &pkgs);
+    args.extend([
+      "--target".into(),
+      HOST_TARGET.into(),
+      "--lib".into(),
+      "--tests".into(),
+      "--message-format=json".into(),
+      "--".into(),
+      "-D".into(),
+      "warnings".into(),
+    ]);
+    let _ = Command::new("cargo").args(&args).status();
+  }
+
   Ok(())
 }

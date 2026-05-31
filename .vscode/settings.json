@@ -32,17 +32,30 @@
   "files.trimTrailingWhitespace": true,
 
   // --- Rust Analyzer 設定 ---
+
+  // --- Rust Analyzer: コードモデル ---
+  // 主開発ターゲット（補完・型推論・go-to-def に影響）
+  // embedded 作業時: "thumbv7em-none-eabihf"
+  // host テスト作業時: null に変更
+  "rust-analyzer.cargo.target": "thumbv7em-none-eabihf",
+  // "rust-analyzer.cargo.target": null,
+
+  // --- Rust Analyzer: 診断 (flycheck) ---
+  // overrideCommand で embedded/host 両方の clippy 診断を取得
+  // ※ overrideCommand 使用時は check.command, check.targets,
+  //    check.extraArgs, check.allTargets は全て無視される
+  "rust-analyzer.check.overrideCommand": ["cargo", "xtask", "fly-check"],
+
   // 保存時に `clippy` を実行してコードをチェック
-  "rust-analyzer.check.command": "clippy",
+  // "rust-analyzer.check.command": "clippy",
   "rust-analyzer.checkOnSave": true,
   // ARM bare-metal ターゲットでは test crate が存在しないため
   // --all-targets (--tests) でのチェックを無効化する
   // ホストテストは `cargo test-host` で別途実行
-  "rust-analyzer.check.allTargets": false,
-  "rust-analyzer.check.targets": ["host-tuple"],
-  // "rust-analyzer.cargo.target": "thumbv7em-none-eabihf",
+  // "rust-analyzer.check.allTargets": false,
+  // "rust-analyzer.check.targets": ["host-tuple"],
   // `clippy` に渡す追加の引数（すべての機能を有効にする）
-  "rust-analyzer.check.extraArgs": ["--lib", "--tests", "--", "-D", "warnings"],
+  // "rust-analyzer.check.extraArgs": ["--lib", "--tests", "--", "-D", "warnings"],
   // プロシージャルマクロのサポートを有効化
   "rust-analyzer.procMacro.enable": true,
   // Rust Analyzer が認識する Cargo の features を指定
