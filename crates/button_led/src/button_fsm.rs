@@ -1,5 +1,7 @@
 //! Button FSM（有限状態機械）
 
+// ✅ defmt は ARM ターゲットでのみ import
+#[cfg(all(target_arch = "arm", target_os = "none"))]
 use defmt::Format;
 
 /// ディバウンス時間(一般的に10msec-20msec)
@@ -8,7 +10,8 @@ pub const DEBOUNCE_MS: u64 = 20;
 pub const LONG_PRESS_MS: u64 = 1000;
 
 /// ボタンから外部に通知するイベント
-#[derive(Clone, Copy, PartialEq, Eq, Debug, Format)]
+#[derive(Clone, Copy, PartialEq, Eq, Debug)]
+#[cfg_attr(all(target_arch = "arm", target_os = "none"), derive(Format))]
 pub enum ButtonEvent {
   /// 短押しイベント
   ShortPress,
@@ -19,7 +22,8 @@ pub enum ButtonEvent {
 }
 
 /// ボタンの状態
-#[derive(Clone, Copy, PartialEq, Eq, Debug, Format)]
+#[derive(Clone, Copy, PartialEq, Eq, Debug)]
+#[cfg_attr(all(target_arch = "arm", target_os = "none"), derive(Format))]
 pub enum ButtonState {
   /// リリース状態
   Released,
@@ -28,7 +32,8 @@ pub enum ButtonState {
 }
 
 /// GPIOから入力される物理的なイベント
-#[derive(Clone, Copy, PartialEq, Eq, Debug, Format)]
+#[derive(Clone, Copy, PartialEq, Eq, Debug)]
+#[cfg_attr(all(target_arch = "arm", target_os = "none"), derive(Format))]
 pub enum PhysicalEvent {
   /// 立ち上がりエッジ
   RisingEdge,
@@ -39,7 +44,8 @@ pub enum PhysicalEvent {
 }
 
 /// FSMの内部状態
-#[derive(Clone, Copy, PartialEq, Eq, Debug, Format)]
+#[derive(Clone, Copy, PartialEq, Eq, Debug)]
+#[cfg_attr(all(target_arch = "arm", target_os = "none"), derive(Format))]
 pub enum ButtonFsmState {
   /// アイドル状態
   Idle,

@@ -4,7 +4,7 @@
 #[cfg(all(test, not(target_os = "none")))]
 extern crate std;
 
-#[cfg(all(target_arch = "arm", target_os = "none"))]
+/// button_fsm は常に公開（純粋ロジックのため）
 pub mod button_fsm;
 
 #[cfg(all(target_arch = "arm", target_os = "none"))]
