@@ -48,7 +48,7 @@ info "ターゲット '${TARGET}' をインストール中..."
 rustup target add "${TARGET}"
 info "ターゲット '${TARGET}' のインストール完了"
 
-# Windowsホストテスト用ターゲット (blinky_test.sh で使用)
+# Windowsホストテスト用ターゲット
 if [[ "$OSTYPE" == "msys" || "$OSTYPE" == "cygwin" || "$OSTYPE" == "win32" ]]; then
   info "Windows 用テストターゲット 'x86_64-pc-windows-msvc' をインストール中..."
   rustup target add x86_64-pc-windows-msvc 2>/dev/null || true
