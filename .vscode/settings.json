@@ -35,6 +35,12 @@
   // 保存時に `clippy` を実行してコードをチェック
   "rust-analyzer.check.command": "clippy",
   "rust-analyzer.checkOnSave": true,
+  // ARM bare-metal ターゲットでは test crate が存在しないため
+  // --all-targets (--tests) でのチェックを無効化する
+  // ホストテストは `cargo test-host` で別途実行
+  "rust-analyzer.check.allTargets": false,
+  "rust-analyzer.check.targets": ["thumbv7em-none-eabihf"],
+  "rust-analyzer.cargo.target": "thumbv7em-none-eabihf",
   // `clippy` に渡す追加の引数（すべての機能を有効にする）
   // "rust-analyzer.check.extraArgs": ["--all-features"], // 重複 "rust-analyzer.cargo.features": "all"
   // プロシージャルマクロのサポートを有効化

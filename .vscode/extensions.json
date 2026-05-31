@@ -18,6 +18,7 @@
     "ritwickdey.liveserver",
     "bierner.markdown-preview-github-styles",
     "davidanson.vscode-markdownlint",
-    "yzhang.markdown-all-in-one"
+    "yzhang.markdown-all-in-one",
+    "probe-rs.probe-rs-debugger"
   ]
 }

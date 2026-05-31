@@ -17,171 +17,245 @@ info() { echo -e "${GREEN}➤${RESET} $*"; }
 warn() { echo -e "${YELLOW}⚠${RESET} $*"; }
 
 usage() {
-  cat <<'USAGE'
-Usage:
-  scripts/new_crate.sh [--lib | --bin | --binary] [--edition 2015|2018|2021|2024]
-                       [--open | --no-open] [--path DIR] <crate-name>
+  cat <<'EOF'
+Usage: scripts/new_crate.sh <crate-name>
+
+Create a new Embassy-rs STM32 crate from crates/template/.
 
 Options:
-  -l, --lib             Create a library crate (default)
-  -b, --bin, --binary   Create a binary crate
-  --edition <ver>       Set edition (default: 2024)
-  --open                Open the created crate in VS Code
-  --no-open             Do not open VS Code
-  --path, --dir DIR     Target parent directory (default: <repo-root>/crates)
   -h, --help            Show this help
 
 Examples:
-  scripts/new_crate.sh hello_lib
-  scripts/new_crate.sh --binary hello_cli
-  scripts/new_crate.sh --bin --edition 2024 --path ./packages hello_lib
-USAGE
+  scripts/new_crate.sh uart_echo
+  scripts/new_crate.sh my_sensor
+EOF
 }
 
-# defaults
-# 現在の西暦は2025年でRust Edition 2024が最新版である。
-CRATE_TYPE="lib"      # lib/bin
-EDITION="2024"        # Use latest stable 2024 edition (safe default)
-OPEN_MODE="auto"      # auto/yes/no
-TARGET_DIR=""         # parent dir (default resolved later)
-CRATE_NAME=""
-
-if [[ $# -eq 0 ]]; then
+if [[ $# -ne 1 ]]; then
   usage
   exit 1
 fi
 
-# parse args
-while [[ $# -gt 0 ]]; do
-  case "$1" in
-    -l|--lib) CRATE_TYPE="lib"; shift ;;
-    -b|--bin|--binary) CRATE_TYPE="bin"; shift ;;
-    --edition)
-      [[ $# -ge 2 ]] || die "missing value for --edition"
-      case "$2" in
-        2015|2018|2021|2024) EDITION="$2" ;;
-        *) die "unsupported edition: $2 (use 2015, 2018, 2021, or 2024)" ;;
-      esac
-      shift 2
-      ;;
-    --path|--dir)
-      [[ $# -ge 2 ]] || die "missing value for --path/--dir"
-      TARGET_DIR="$2"
-      shift 2
-      ;;
-    --open) OPEN_MODE="yes"; shift ;;
-    --no-open) OPEN_MODE="no"; shift ;;
-    -h|--help) usage; exit 0 ;;
-    --) shift; break ;;
-    -*)
-      die "Unknown option: $1"
-      ;;
-    *)
-      if [[ -n "${CRATE_NAME}" ]]; then
-        die "Multiple crate names provided: '${CRATE_NAME}' and '$1'"
-      fi
-      CRATE_NAME="$1"
-      shift
-      ;;
-  esac
-done
+case "$1" in
+  -h|--help)
+    usage
+    exit 0
+    ;;
+esac
 
-# required args
-[[ -n "${CRATE_NAME}" ]] || { usage; die "crate-name is required"; }
+CRATE_NAME="$1"
 
-# crate name validation (lowercase letters, digits, '_' and '-', start with a letter)
+# Rust package name validation (lowercase letters, digits, '_' and '-', start with a letter)
 if ! [[ "${CRATE_NAME}" =~ ^[a-z][a-z0-9_-]*$ ]]; then
   die "invalid crate name: '${CRATE_NAME}' (use lower-case letters, digits, '_' and '-' and start with a letter)"
 fi
 
-# env checks
-command -v cargo >/dev/null 2>&1 || die "cargo not found. Please install Rust toolchain."
-
-# resolve paths
-SCRIPT_DIR="$(cd -- "$(dirname "${BASH_SOURCE[0]}")" && pwd)"
-ROOT_DIR="$(cd -- "${SCRIPT_DIR}/.." && pwd)"
-CRATES_DIR="${TARGET_DIR:-${ROOT_DIR}/crates}"
-NEW_DIR="${CRATES_DIR}/${CRATE_NAME}"
-
-# check existence
-if [[ -e "${NEW_DIR}" ]]; then
-  die "target directory already exists: ${NEW_DIR}"
+if [[ "${CRATE_NAME}" == "template" ]]; then
+  die "crate name 'template' is reserved"
 fi
 
-mkdir -p "${CRATES_DIR}"
+# Resolve paths
+SCRIPT_DIR="$(cd -- "$(dirname "${BASH_SOURCE[0]}")" && pwd)"
+REPO_ROOT="$(cd -- "${SCRIPT_DIR}/.." && pwd)"
+CRATES_DIR="${REPO_ROOT}/crates"
+SCRIPTS_DIR="${REPO_ROOT}/scripts"
+TEMPLATE_DIR="${CRATES_DIR}/template"
+DEST_DIR="${CRATES_DIR}/${CRATE_NAME}"
+RUNNER_TEMPLATE="${SCRIPTS_DIR}/template.sh"
+DEST_RUNNER="${SCRIPTS_DIR}/${CRATE_NAME}.sh"
 
-# create crate
-info "Creating ${CRATE_TYPE} crate '${CRATE_NAME}' at '${NEW_DIR}'"
-cargo new "--${CRATE_TYPE}" --vcs none "${NEW_DIR}"
+# Check template existence
+[[ -d "${TEMPLATE_DIR}" ]] || die "template directory not found: ${TEMPLATE_DIR}"
 
-CARGO_TOML="${NEW_DIR}/Cargo.toml"
+# Check runner template existence (fail fast to avoid partial creation)
+[[ -f "${RUNNER_TEMPLATE}" ]] || die "runner template script not found: ${RUNNER_TEMPLATE}"
 
-# Configure workspace inheritance by replacing the entire Cargo.toml
-info "Configuring workspace inheritance..."
+# Check destination
+[[ ! -e "${DEST_DIR}" ]] || die "destination already exists: ${DEST_DIR}"
+[[ ! -e "${DEST_RUNNER}" ]] || die "runner script already exists: ${DEST_RUNNER}"
 
-# Create a completely new Cargo.toml with correct structure
-TEMP_TOML=$(mktemp)
-{
-  # Extract name from the original file
-  NAME=$(grep '^name = ' "$CARGO_TOML" | sed 's/name = "//; s/"//')
+# Create destination directory
+mkdir -p "${DEST_DIR}"
 
-  # Write the complete new structure
-  echo "[package]"
-  echo "name = \"$NAME\""
-  echo "edition = \"${EDITION}\""
-  echo "version = { workspace = true }"
-  echo "authors = { workspace = true }"
-  echo "license = { workspace = true }"
-  echo "description = { workspace = true }"
-  echo "readme = { workspace = true }"
-  echo "repository = { workspace = true }"
-  echo "rust-version = { workspace = true }"
-  echo "publish = { workspace = true }"
-  echo ""
-  echo "[dependencies]"
-  echo "thiserror = { workspace = true }"
-  echo "serde = { workspace = true }"
-  echo "serde_json = { workspace = true }"
-  echo "tracing = { workspace = true }"
-  echo "tracing-subscriber = { workspace = true }"
-  echo ""
-  echo "[lints]"
-  echo "workspace = true"
-} > "$TEMP_TOML"
-
-# Replace the original file
-mv "$TEMP_TOML" "$CARGO_TOML"
-
-# sample code initialization
-if [[ "${CRATE_TYPE}" == "bin" ]]; then
-  cat > "${NEW_DIR}/src/main.rs" <<'RS'
-fn main() {
-    println!("Hello from binary crate!");
+# Cleanup + rollback on failure
+CREATED_DEST=1
+CREATED_RUNNER=0
+TMP_FILES=()
+cleanup() {
+  local ec=$?
+  for f in "${TMP_FILES[@]}"; do rm -f "$f" || true; done
+  if (( ec != 0 )); then
+    if (( CREATED_RUNNER )); then rm -f "${DEST_RUNNER}" || true; fi
+    if (( CREATED_DEST )); then rm -rf "${DEST_DIR}" || true; fi
+  fi
 }
-RS
-else
-  cat > "${NEW_DIR}/src/lib.rs" <<'RS'
-//! Crate documentation
+trap cleanup EXIT
 
-pub fn hello() -> &'static str {
-    "hello from lib crate"
+info "Creating new Embassy crate: ${BOLD}${CRATE_NAME}${RESET}"
+info "Template: ${TEMPLATE_DIR}"
+info "Destination: ${DEST_DIR}"
+
+# Copy entire template directory (including dotfiles)
+cp -a "${TEMPLATE_DIR}/." "${DEST_DIR}/"
+
+CARGO_TOML="${DEST_DIR}/Cargo.toml"
+[[ -f "${CARGO_TOML}" ]] || die "Cargo.toml not found in template output: ${CARGO_TOML}"
+
+# Temporary file for Cargo.toml modification
+TMP_FILE=$(mktemp); TMP_FILES+=("${TMP_FILE}")
+
+# Modify Cargo.toml: package.name and [[bin]] name/path
+awk -v crate_name="${CRATE_NAME}" '
+BEGIN {
+    in_package = 0
+    in_bin = 0
+
+    package_name_rewritten = 0
+    bin_section_seen = 0
+    bin_name_written = 0
+    bin_path_written = 0
 }
 
-#[cfg(test)]
-mod tests {
-    use super::*;
-    #[test]
-    fn it_works() {
-        assert_eq!(hello(), "hello from lib crate");
+function flush_bin_defaults() {
+    if (in_bin) {
+        if (!bin_name_written) {
+            print "name = \"" crate_name "\""
+        }
+        if (!bin_path_written) {
+            print "path = \"src/main.rs\""
+        }
     }
 }
-RS
-fi
 
-# open in VS Code (auto: open if 'code' exists)
-# if [[ "${OPEN_MODE}" == "yes" ]] || { [[ "${OPEN_MODE}" == "auto" ]] && command -v code >/dev/null 2>&1; }; then
-#   code "${NEW_DIR}" -r || warn "VSCode open failed"
-# fi
+{
+    # [[bin]] section start
+    if ($0 ~ /^\[\[bin\]\][[:space:]]*$/) {
+        flush_bin_defaults()
 
-info "Created crate: ${BOLD}${CRATE_NAME}${RESET} at ${NEW_DIR}"
-echo "Workspace members are matched by crates/* — Cargo.tomlのmembers更新は不要です。"
+        print $0
+        in_package = 0
+        in_bin = 1
+
+        bin_section_seen = 1
+        bin_name_written = 0
+        bin_path_written = 0
+        next
+    }
+
+    # Regular [section] start
+    if ($0 ~ /^\[[^]]+\][[:space:]]*$/) {
+        flush_bin_defaults()
+
+        in_package = ($0 == "[package]")
+        in_bin = 0
+
+        print $0
+        next
+    }
+
+    # [package] name
+    if (in_package && $0 ~ /^[[:space:]]*name[[:space:]]*=/ && !package_name_rewritten) {
+        print "name = \"" crate_name "\""
+        package_name_rewritten = 1
+        next
+    }
+
+    # [[bin]] name
+    if (in_bin && $0 ~ /^[[:space:]]*name[[:space:]]*=/ && !bin_name_written) {
+        print "name = \"" crate_name "\""
+        bin_name_written = 1
+        next
+    }
+
+    # [[bin]] path
+    if (in_bin && $0 ~ /^[[:space:]]*path[[:space:]]*=/ && !bin_path_written) {
+        print "path = \"src/main.rs\""
+        bin_path_written = 1
+        next
+    }
+
+    print $0
+}
+
+END {
+    flush_bin_defaults()
+
+    if (!package_name_rewritten) {
+        print "Cargo.toml does not contain [package].name" > "/dev/stderr"
+        exit 1
+    }
+
+    # Add [[bin]] section if not present in template
+    if (!bin_section_seen) {
+        print ""
+        print "[[bin]]"
+        print "name = \"" crate_name "\""
+        print "path = \"src/main.rs\""
+    }
+}
+' "${CARGO_TOML}" > "${TMP_FILE}"
+
+# Replace Cargo.toml with modified version
+mv "${TMP_FILE}" "${CARGO_TOML}"
+
+# --- Feature 1: Replace info! message in src/main.rs ---
+MAIN_RS="${DEST_DIR}/src/main.rs"
+[[ -f "${MAIN_RS}" ]] || die "src/main.rs not found in template output: ${MAIN_RS}"
+
+TMP_MAIN=$(mktemp); TMP_FILES+=("${TMP_MAIN}")
+awk -v crate_name="${CRATE_NAME}" '
+BEGIN { replaced = 0 }
+{
+  if ($0 ~ /^[[:space:]]*info!\("template crate started"\);[[:space:]]*$/) {
+    print "info!(\"" crate_name " crate started\");"
+    replaced++
+    next
+  }
+  print $0
+}
+END {
+  if (replaced != 1) {
+    if (replaced == 0) {
+      print "src/main.rs: target line not found: info!(\"template crate started\");" > "/dev/stderr"
+    } else {
+      print "src/main.rs: target line matched multiple times: " replaced > "/dev/stderr"
+    }
+    exit 2
+  }
+}
+' "${MAIN_RS}" > "${TMP_MAIN}"
+mv "${TMP_MAIN}" "${MAIN_RS}"
+
+# --- Feature 2: Generate runner script scripts/{crate_name}.sh ---
+TMP_RUN=$(mktemp); TMP_FILES+=("${TMP_RUN}")
+awk -v crate_name="${CRATE_NAME}" '
+BEGIN { replaced = 0 }
+{
+  if ($0 ~ /^[[:space:]]*cargo[[:space:]]+run[[:space:]]+--bin[[:space:]]+template[[:space:]]*$/) {
+    print "cargo run --bin " crate_name
+    replaced++
+    next
+  }
+  print $0
+}
+END {
+  if (replaced != 1) {
+    if (replaced == 0) {
+      print "scripts/template.sh: target line not found: cargo run --bin template" > "/dev/stderr"
+    } else {
+      print "scripts/template.sh: target line matched multiple times: " replaced > "/dev/stderr"
+    }
+    exit 2
+  }
+}
+' "${RUNNER_TEMPLATE}" > "${TMP_RUN}"
+mv "${TMP_RUN}" "${DEST_RUNNER}"
+chmod +x "${DEST_RUNNER}" || true
+CREATED_RUNNER=1
+
+info "Created crate: ${DEST_DIR}"
+echo ""
+echo "Next steps:"
+echo "  1. Modify ${BOLD}src/main.rs${RESET} to implement your application"
+echo "  2. Build with: ${BOLD}cargo build -p ${CRATE_NAME} --release${RESET}"
+echo "  3. Run with: ${BOLD}./scripts/${CRATE_NAME}.sh${RESET}"

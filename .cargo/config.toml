@@ -1,13 +1,51 @@
+[target.'cfg(all(target_arch = "arm", target_os="none"))']
+# ワークスペース全体の linker の設定は build.rs で行わずに本ファイル内に集約する。
+# クレート個別の設定は build.rs で行う。
+
+# 以下の rustflags ではコンパイル時の引数を設定している。
+#   -C       : rustc の codegen option
+#   --nomagic: デフォルトのマジックナンバー使用禁止。組み込み用
+#   --Tlink.x: linker script として link.x を使用。
+#            : .text, .data, .bss, stack 等を配置定義する。
+#            : C言語での .ld ファイルと同等の働きをする。
+#            : `cortex-m-rt` が提供してくれるので自作不要。
+#            : vector table などは link.x 内に書かれる。
+#            : ユーザー定義のメモリ配置は `memory.x` を定義すること。
+#   --Tdefmt.x:linker script として defmt.x を使用。
+#             : defmt で使用するセクションを定義する。
+#             : フォーマット文字列をインデックス化して配置するための場所。
+#             : `defmt` クレートが用意してくれるので自作不要。
+rustflags = [
+    "-C",
+    "link-arg=--nomagic",
+    "-C",
+    "link-arg=-Tlink.x",
+    "-C",
+    "link-arg=-Tdefmt.x",
+]
+
+# runner 定義
+# `probe-rs` クレートを使用して，指定した ARM MCU ターゲットに対して
+# flash erase/program/debug を行う。
+# 使用するターゲットごとにカスタム必要。
+runner = "probe-rs run --chip STM32F767ZITx"
+
 [build]
-target-dir = "target"
+# MCUのアーキテクチャーを指定する。
+# 使用するターゲットごとにカスタム必要。
+# 以下は STM32F767ZI board の場合のアーキテクチャーである。
+target = "thumbv7em-none-eabihf"
+
+# ビルドディレクトリー。通常は変更不要。
+# target-dir = "target"
+
+[env]
+# defmt のログレベルを環境変数で設定する。
+# debug, info, warn, error, off
+DEFMT_LOG = "info"
+
+# ログ出力の量が足りない場合は次の値を大きくする
+DEFMT_RTT_BUFFER_SIZE = "4096" # default is 2048 byte
 
 [alias]
-fmt-check = "fmt --all -- --check"
-lint = "clippy --workspace --all-targets --all-features"
-lint-strict = "clippy --workspace --all-targets --all-features -D warnings"
-test-all = "test --workspace --all-features"
-doc-all = "doc --workspace --no-deps --all-features"
-
-# カバレッジ(CI/ローカル)を 'cargo cov' で呼べるようにする（cargo-llvm-covが必要）
-cov = "llvm-cov --workspace --all-features --lcov --output-path lcov.info"
-cov-html = "llvm-cov --workspace --all-features --html"
+# 必要に応じてエイリアスを設定可能である。
