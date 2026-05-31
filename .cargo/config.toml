@@ -3,25 +3,25 @@
 # クレート個別の設定は build.rs で行う。
 
 # 以下の rustflags ではコンパイル時の引数を設定している。
-#   -C       : rustc の codegen option
-#   --nomagic: デフォルトのマジックナンバー使用禁止。組み込み用
-#   --Tlink.x: linker script として link.x を使用。
-#            : .text, .data, .bss, stack 等を配置定義する。
-#            : C言語での .ld ファイルと同等の働きをする。
-#            : `cortex-m-rt` が提供してくれるので自作不要。
-#            : vector table などは link.x 内に書かれる。
-#            : ユーザー定義のメモリ配置は `memory.x` を定義すること。
-#   --Tdefmt.x:linker script として defmt.x を使用。
-#             : defmt で使用するセクションを定義する。
-#             : フォーマット文字列をインデックス化して配置するための場所。
-#             : `defmt` クレートが用意してくれるので自作不要。
+#   -C      : rustc の codegen option
+#   -nmagic : デフォルトのマジックナンバー使用禁止。組み込み用
+#   -Tlink.x: linker script として link.x を使用。
+#           : .text, .data, .bss, stack 等を配置定義する。
+#           : C言語での .ld ファイルと同等の働きをする。
+#           : `cortex-m-rt` が提供してくれるので自作不要。
+#           : vector table などは link.x 内に書かれる。
+#           : ユーザー定義のメモリ配置は `memory.x` を定義すること。
+#   -Tdefmt.x:linker script として defmt.x を使用。
+#            : defmt で使用するセクションを定義する。
+#            : フォーマット文字列をインデックス化して配置するための場所。
+#            : `defmt` クレートが用意してくれるので自作不要。
 rustflags = [
-    "-C",
-    "link-arg=--nomagic",
-    "-C",
-    "link-arg=-Tlink.x",
-    "-C",
-    "link-arg=-Tdefmt.x",
+  "-C",
+  "link-arg=-nmagic",
+  "-C",
+  "link-arg=-Tlink.x",
+  "-C",
+  "link-arg=-Tdefmt.x",
 ]
 
 # runner 定義

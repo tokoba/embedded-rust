@@ -2,32 +2,80 @@
 members = ["crates/*"]
 exclude = ["crates/_template-*"]
 
-# 現在の西暦は2025年でresolver "3" が最新版である。(rust edition 2024 では resolver "3" がデフォルト)
+# rust edition 2024 では resolver "3" がデフォルト
 resolver = "3"
 
 [workspace.package]
 # 各クレートのCargo.tomlから継承できるメタ情報
 version = "0.1.0"
-authors = ["Your Name <your.email@example.com>"]
+authors = ["tokoba <tokoba@gmail.com>"]
 license = "MIT"
-description = "Rust Examples Workspace"
-repository = "https://github.com/your/repo"
+description = "Embedded-Rust"
+repository = "https://github.com/tokoba/embedded-rust.git"
 readme = "README.md"
-rust-version = "1.93.0"
-# 現在の西暦は2025年でRust Edition 2024が最新版である。
+rust-version = "1.95.0"
 edition = "2024"
 publish = false
 
 [workspace.dependencies]
-# よく使う依存関係をここでバージョン統一
-thiserror = "2.0.17"
-serde = { version = "1.0.228", features = ["derive"] }
-serde_json = "1.0.145"
-tracing = "0.1.43"
-tracing-subscriber = { version = "0.3.22", features = ["env-filter", "fmt"] }
-tokio = { version = "1.48.0", features = ["macros", "rt-multi-thread"] }
+embassy-executor = { version = "0.10.0", features = [
+  "platform-cortex-m",
+  "executor-thread",
+  "executor-interrupt",
+  "defmt",
+] }
+embassy-stm32 = { version = "0.6.0", features = [
+  "defmt",
+  "stm32f767zi",
+  "unstable-pac",
+  "time-driver-any",
+  "exti",
+  "single-bank",
+] }
+embassy-sync = { version = "0.8.0", features = ["defmt"] }
+embassy-time = { version = "0.5.1", features = [
+  "defmt",
+  "defmt-timestamp-uptime",
+  "tick-hz-32_768",
+] }
+embassy-net = { version = "0.9.1", features = [
+  "defmt",
+  "tcp",
+  "dhcpv4",
+  "medium-ethernet",
+  "auto-icmp-echo-reply",
+] }
+embedded-io-async = { version = "0.7.0" }
+embassy-usb = { version = "0.6.0", features = ["defmt"] }
+embassy-futures = { version = "0.1.2" }
 
-[workspace.dev-dependencies]
+embedded-test-linker-script = "0.1.0"
+
+# 組み込み関連
+defmt = "1.1.0"
+defmt-rtt = "1.2.0"
+panic-probe = { version = "1.0.0", features = ["print-defmt"] }
+
+
+# cortex-m アーキテクチャー関連
+cortex-m = { version = "0.7.7", features = [
+  "inline-asm",
+  "critical-section-single-core",
+] }
+cortex-m-rt = "0.7.5"
+embedded-hal = "1.0.0"
+heapless = { version = "0.9.3", default-features = false }
+nb = "1.1.0"
+critical-section = "1.2.0"
+embedded-storage = "0.3.1"
+static_cell = "2.1.1"
+sha2 = { version = "0.11.0", default-features = false }
+hmac = { version = "0.13.0", default-features = false }
+# aes-gcm = { version = "0.10.3", default-features = false, features = [
+#     "aes",
+#     "heapless",
+# ] }
+proptest = "1.11.0"
 
 [workspace.lints.rust]
 # 開発体験を損ねない範囲で厳格化。CIでは -D warnings を併用するのが実務的
@@ -49,6 +97,6 @@ incremental = true
 debug = 2
 
 [profile.release]
-lto = "thin"
-codegen-units = 1
-strip = "symbols"
+debug = 2
+lto = true
+opt-level = 2
