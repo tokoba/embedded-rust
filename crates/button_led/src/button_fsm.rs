@@ -1,48 +1,77 @@
 //! Button FSM（有限状態機械）
 
-pub const DEBOUNCE_MS: u64 = 30;
+use defmt::Format;
+
+/// ディバウンス時間(一般的に10msec-20msec)
+pub const DEBOUNCE_MS: u64 = 20;
+/// 長押し判定時間
 pub const LONG_PRESS_MS: u64 = 1000;
 
-#[derive(Clone, Copy, PartialEq, Eq, Debug)]
+/// ボタンから外部に通知するイベント
+#[derive(Clone, Copy, PartialEq, Eq, Debug, Format)]
 pub enum ButtonEvent {
+  /// 短押しイベント
   ShortPress,
+  /// 長押しイベント
   LongPress,
+  /// リリースイベント
   Released,
 }
 
-#[derive(Clone, Copy, PartialEq, Eq, Debug)]
+/// ボタンの状態
+#[derive(Clone, Copy, PartialEq, Eq, Debug, Format)]
 pub enum ButtonState {
+  /// リリース状態
   Released,
+  /// プレス状態
   Pressed,
 }
 
-#[derive(Clone, Copy, PartialEq, Eq, Debug)]
+/// GPIOから入力される物理的なイベント
+#[derive(Clone, Copy, PartialEq, Eq, Debug, Format)]
 pub enum PhysicalEvent {
+  /// 立ち上がりエッジ
   RisingEdge,
+  /// 立ち下がりエッジ
   FallingEdge,
+  /// タイムアウト
   Timeout,
 }
 
-#[derive(Clone, Copy, PartialEq, Eq, Debug)]
+/// FSMの内部状態
+#[derive(Clone, Copy, PartialEq, Eq, Debug, Format)]
 pub enum ButtonFsmState {
+  /// アイドル状態
   Idle,
+  /// プレスディバウンス中
   DebouncingPress,
+  /// プレス状態
   Pressed,
+  /// 長押し検出状態
   LongPressDetected,
+  /// リリースディバウンス中
   DebouncingRelease,
 }
 
+/// FSMの内部状態
 #[derive(Debug)]
 pub struct ButtonFsm {
+  /// FSMの内部状態
   pub state: ButtonFsmState,
+  /// プレス開始時間
   pub press_start_ms: Option<u64>,
 }
 
 impl ButtonFsm {
+  /// FSMの初期化
   pub fn new(initial_state: ButtonFsmState) -> Self {
-    Self { state: initial_state, press_start_ms: None }
+    Self {
+      state: initial_state,
+      press_start_ms: None,
+    }
   }
 
+  /// 物理的なイベントを処理する
   pub fn on_event(
     &mut self,
     event: PhysicalEvent,
@@ -114,7 +143,9 @@ mod tests {
       (PhysicalEvent::FallingEdge, DEBOUNCE_MS + 100),
       (PhysicalEvent::Timeout, DEBOUNCE_MS + 100 + DEBOUNCE_MS),
     ] {
-      if let Some(e) = fsm.on_event(event, time, DEBOUNCE_MS, LONG_PRESS_MS) { events.push(e); }
+      if let Some(e) = fsm.on_event(event, time, DEBOUNCE_MS, LONG_PRESS_MS) {
+        events.push(e);
+      }
     }
     assert_eq!(events, vec![ButtonEvent::ShortPress]);
     assert_eq!(fsm.state, ButtonFsmState::Idle);
@@ -128,10 +159,18 @@ mod tests {
       (PhysicalEvent::RisingEdge, 0),
       (PhysicalEvent::Timeout, DEBOUNCE_MS),
       (PhysicalEvent::Timeout, DEBOUNCE_MS + LONG_PRESS_MS),
-      (PhysicalEvent::FallingEdge, DEBOUNCE_MS + LONG_PRESS_MS + 100),
-      (PhysicalEvent::Timeout, DEBOUNCE_MS + LONG_PRESS_MS + 100 + DEBOUNCE_MS),
+      (
+        PhysicalEvent::FallingEdge,
+        DEBOUNCE_MS + LONG_PRESS_MS + 100,
+      ),
+      (
+        PhysicalEvent::Timeout,
+        DEBOUNCE_MS + LONG_PRESS_MS + 100 + DEBOUNCE_MS,
+      ),
     ] {
-      if let Some(e) = fsm.on_event(event, time, DEBOUNCE_MS, LONG_PRESS_MS) { events.push(e); }
+      if let Some(e) = fsm.on_event(event, time, DEBOUNCE_MS, LONG_PRESS_MS) {
+        events.push(e);
+      }
     }
     assert_eq!(events, vec![ButtonEvent::LongPress]);
     assert_eq!(fsm.state, ButtonFsmState::Idle);
@@ -146,7 +185,9 @@ mod tests {
       (PhysicalEvent::FallingEdge, 10),
       (PhysicalEvent::Timeout, DEBOUNCE_MS),
     ] {
-      if let Some(e) = fsm.on_event(event, time, DEBOUNCE_MS, LONG_PRESS_MS) { events.push(e); }
+      if let Some(e) = fsm.on_event(event, time, DEBOUNCE_MS, LONG_PRESS_MS) {
+        events.push(e);
+      }
     }
     assert_eq!(events, Vec::<ButtonEvent>::new());
     assert_eq!(fsm.state, ButtonFsmState::Idle);
@@ -161,7 +202,9 @@ mod tests {
       (PhysicalEvent::Timeout, DEBOUNCE_MS),
       (PhysicalEvent::Timeout, DEBOUNCE_MS + LONG_PRESS_MS),
     ] {
-      if let Some(e) = fsm.on_event(event, time, DEBOUNCE_MS, LONG_PRESS_MS) { events.push(e); }
+      if let Some(e) = fsm.on_event(event, time, DEBOUNCE_MS, LONG_PRESS_MS) {
+        events.push(e);
+      }
     }
     assert_eq!(events, vec![ButtonEvent::LongPress]);
     assert_eq!(fsm.state, ButtonFsmState::LongPressDetected);
