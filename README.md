@@ -1,30 +1,6 @@
-# Embedded-Rust.com sample codes
+# xtask embedded target self-exclude fix
 
-This repository is an archived repository for [embedded-rust.com/](http://embedded-rust.com/).
+`cargo clippy --workspace --target thumbv7em-none-eabihf --bins` includes the `xtask` binary itself because `xtask` is a workspace member.
+That attempts to compile the std-based host tool for a bare-metal target and causes many errors.
 
-## How to use this repository
-
-### Setup the environment
-
-You can install the rustc and cargo at [rustup.rs](https://rustup.rs/).
-
-### clone
-
-```bash
-git clone https://github.com/ryota42/embedded-rust.git
-```
-
-### Embedded Rust environments
-
-You need to specify the target MCU/MPU board, and target Rust toolchain.
-For example, if you use the STM32F407Discovery board, you need to install the `thumbv7em-none-eabi` target toolchain. The required target toolchain is described in the rustc repository.
-
-reference:
-[rustc platform-support](https://doc.rust-lang.org/nightly/rustc/platform-support/arm-none-eabi.html)
-[rustc thumbv7em info](https://doc.rust-lang.org/beta/rustc/platform-support/thumbv7em-none-eabi.html)
-
-```bash
-# Install the target Rust toolchain
-cargo install thumbv7em-none-eabi
-```
-
+Apply `xtask-exclude-self-fix.patch`, or manually add `--exclude xtask` to both embedded commands in `xtask/src/main.rs`.

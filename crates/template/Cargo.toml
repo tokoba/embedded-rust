@@ -16,40 +16,21 @@ workspace = true
 name = "template"
 path = "src/main.rs"
 
-# Target-independent dependencies
-# These are available on all targets (host and ARM)
 [dependencies]
-# heapless= { workspace = true }
 
-# ARM Cortex-M bare-metal specific dependencies
-# These are only compiled when building for ARM bare-metal targets
 [target.'cfg(all(target_arch = "arm", target_os = "none"))'.dependencies]
 embassy-executor = { workspace = true }
 embassy-stm32 = { workspace = true }
-# embassy-sync = { workspace = true }
-# embassy-time = { workspace = true }
-# embassy-net= { workspace = true }
-# embedded-io-async= { workspace = true }
-# embassy-usb= { workspace = true }
-# embassy-futures= { workspace = true }
-
 defmt = { workspace = true }
 defmt-rtt = { workspace = true }
-
 cortex-m = { workspace = true }
 cortex-m-rt = { workspace = true }
-# embedded-hal= { workspace = true }
 panic-probe = { workspace = true }
-# nb= { workspace = true }
-# critical-section= { workspace = true }
-# embedded-storage= { workspace = true }
-# static_cell= { workspace = true }
 
 [package.metadata.embassy]
 build = [{ target = "thumbv7em-none-eabihf" }]
 
 [package.metadata.ci]
-# このクレートはARMターゲット専用（lib.rsなし、binのみ）
 host-testable = false
 
 [features]

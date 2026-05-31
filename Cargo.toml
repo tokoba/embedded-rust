@@ -1,12 +1,9 @@
 [workspace]
-members = ["crates/*"]
+members = ["crates/*", "xtask"]
 exclude = ["crates/_template-*"]
-
-# rust edition 2024 では resolver "3" がデフォルト
 resolver = "3"
 
 [workspace.package]
-# 各クレートのCargo.tomlから継承できるメタ情報
 version = "0.1.0"
 authors = ["tokoba <tokoba@gmail.com>"]
 license = "MIT"
@@ -48,16 +45,10 @@ embassy-net = { version = "0.9.1", features = [
 embedded-io-async = { version = "0.7.0" }
 embassy-usb = { version = "0.6.0", features = ["defmt"] }
 embassy-futures = { version = "0.1.2" }
-
 embedded-test-linker-script = "0.1.0"
-
-# 組み込み関連
 defmt = "1.1.0"
 defmt-rtt = "1.2.0"
 panic-probe = { version = "1.0.0", features = ["print-defmt"] }
-
-
-# cortex-m アーキテクチャー関連
 cortex-m = { version = "0.7.7", features = [
   "inline-asm",
   "critical-section-single-core",
@@ -71,21 +62,15 @@ embedded-storage = "0.3.1"
 static_cell = "2.1.1"
 sha2 = { version = "0.11.0", default-features = false }
 hmac = { version = "0.13.0", default-features = false }
-# aes-gcm = { version = "0.10.3", default-features = false, features = [
-#     "aes",
-#     "heapless",
-# ] }
 proptest = "1.11.0"
 
 [workspace.lints.rust]
-# 開発体験を損ねない範囲で厳格化。CIでは -D warnings を併用するのが実務的
 warnings = { level = "warn" }
 unused = { level = "warn", priority = -1 }
 missing_docs = { level = "warn" }
 missing_debug_implementations = { level = "deny" }
 
 [workspace.lints.clippy]
-# グループ（all/pedantic）は priority = -1 で先に適用し、個別 lint が後から上書きできるようにする
 all = { level = "warn", priority = -1 }
 pedantic = { level = "allow", priority = -1 }
 

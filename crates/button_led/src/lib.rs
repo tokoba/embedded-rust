@@ -1,37 +1,27 @@
-//! lib.rs
-//! blinky プロジェクトのライブラリー
+//! button_led library.
 #![cfg_attr(not(test), no_std)]
 
-// テスト時にのみ std をリンク（MCU ターゲットでは無効）
 #[cfg(all(test, not(target_os = "none")))]
 extern crate std;
 
-// ARM ターゲット（MCU）でのみ led, button モジュールをビルド
 #[cfg(all(target_arch = "arm", target_os = "none"))]
 pub mod button;
-#[cfg(all(target_arch = "arm", target_os = "none"))]
+
+// button_fsm は HAL/Embassy 非依存の純粋ロジックなので host/embedded の両方で公開する。
 pub mod button_fsm;
+
 #[cfg(all(target_arch = "arm", target_os = "none"))]
 pub mod led;
 
-// button_fsm はホストテスト可能
-#[cfg(all(test, not(target_os = "none")))]
-pub mod button_fsm;
-
-/// システムエラー定義
 #[derive(Debug, PartialEq, Eq)]
 pub enum SystemError {
-  /// 配列スライスが空
   EmptySlice,
 }
 
-/// 与えられた引数配列の数値の中の最小値を返す
-/// ここでは u64 に限定する
 pub fn min(values: &[u64]) -> Result<u64, SystemError> {
   values.iter().copied().min().ok_or(SystemError::EmptySlice)
 }
 
-// ホスト向けユニットテスト
 #[cfg(all(test, not(target_os = "none")))]
 mod tests {
   use super::*;

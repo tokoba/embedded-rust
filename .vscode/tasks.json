@@ -2,88 +2,45 @@
   "version": "2.0.0",
   "tasks": [
     {
-      "label": "cargo build (blinky_single_task)",
+      "label": "xtask: list host packages",
       "type": "shell",
-      "command": "cargo",
-      "args": ["build", "--bin", "blinky"],
-      "options": {
-        "cwd": "${workspaceFolder}"
-      },
-      "group": {
-        "kind": "build",
-        "isDefault": true
-      },
-      "problemMatcher": ["$rustc"]
+      "command": "cargo xtask list-host-packages",
+      "problemMatcher": []
     },
     {
-      "label": "cargo build (blinky_multi_task)",
+      "label": "xtask: clippy host",
       "type": "shell",
-      "command": "cargo",
-      "args": ["build", "--bin", "blinky", "--features", "multitask"],
-      "options": {
-        "cwd": "${workspaceFolder}"
-      },
-      "group": {
-        "kind": "build",
-        "isDefault": false
-      },
-      "problemMatcher": ["$rustc"]
+      "command": "cargo xtask clippy-host",
+      "group": "build",
+      "problemMatcher": "$rustc"
     },
     {
-      "label": "cargo build (button_exti)",
+      "label": "xtask: test host",
       "type": "shell",
-      "command": "cargo",
-      "args": ["build", "--bin", "button_exti"],
-      "options": {
-        "cwd": "${workspaceFolder}"
-      },
-      "group": {
-        "kind": "build",
-        "isDefault": false
-      },
-      "problemMatcher": ["$rustc"]
+      "command": "cargo xtask test-host",
+      "group": "test",
+      "problemMatcher": "$rustc"
     },
     {
-      "label": "cargo build (button_led)",
+      "label": "xtask: clippy embedded",
       "type": "shell",
-      "command": "cargo",
-      "args": ["build", "--bin", "button_led"],
-      "options": {
-        "cwd": "${workspaceFolder}"
-      },
-      "group": {
-        "kind": "build",
-        "isDefault": false
-      },
-      "problemMatcher": ["$rustc"]
+      "command": "cargo xtask clippy-embedded",
+      "group": "build",
+      "problemMatcher": "$rustc"
     },
     {
-      "label": "cargo build (usb_serial)",
+      "label": "xtask: build embedded",
       "type": "shell",
-      "command": "cargo",
-      "args": ["build", "--bin", "usb_serial"],
-      "options": {
-        "cwd": "${workspaceFolder}"
-      },
-      "group": {
-        "kind": "build",
-        "isDefault": false
-      },
-      "problemMatcher": ["$rustc"]
+      "command": "cargo xtask build-embedded",
+      "group": "build",
+      "problemMatcher": "$rustc"
     },
     {
-      "label": "cargo build (eth)",
+      "label": "xtask: ci",
       "type": "shell",
-      "command": "cargo",
-      "args": ["build", "--bin", "eth"],
-      "options": {
-        "cwd": "${workspaceFolder}"
-      },
-      "group": {
-        "kind": "build",
-        "isDefault": false
-      },
-      "problemMatcher": ["$rustc"]
+      "command": "cargo xtask ci",
+      "group": "build",
+      "problemMatcher": "$rustc"
     }
   ]
 }
