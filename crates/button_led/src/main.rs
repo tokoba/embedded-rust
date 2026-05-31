@@ -99,13 +99,17 @@ async fn process_fsm_event(fsm: &mut ButtonFsm, event: PhysicalEvent, now_ms: u6
 /// 単純なイベントループ。タイミング知識は全て FSM 側が保持する。
 #[embassy_executor::task]
 async fn button_watcher_task(mut button: ExtiInput<'static, Async>, name: &'static str) {
-  let mut fsm = ButtonFsm::new(ButtonFsmState::Idle);
-
   // 初期状態の判定と通知
   let initial_state = if button.is_low() {
     ButtonState::Released
   } else {
     ButtonState::Pressed
+  };
+
+  // fsm を初期状態に合わせて更新
+  let mut fsm = match initial_state {
+    ButtonState::Released => ButtonFsm::new(ButtonFsmState::Idle),
+    ButtonState::Pressed => ButtonFsm::new(ButtonFsmState::DebouncingPress),
   };
 
   if initial_state == ButtonState::Released {
