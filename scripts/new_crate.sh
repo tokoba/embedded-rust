@@ -18,7 +18,7 @@ warn() { echo -e "${YELLOW}⚠${RESET} $*"; }
 
 usage() {
   cat <<'EOF'
-Usage: scripts/new_crate.sh <crate-name>
+Usage: ./scripts/new_crate.sh <crate-name>
 
 Create a new Embassy-rs STM32 crate from crates/template/.
 
@@ -26,8 +26,8 @@ Options:
   -h, --help            Show this help
 
 Examples:
-  scripts/new_crate.sh uart_echo
-  scripts/new_crate.sh my_sensor
+  ./scripts/new_crate.sh uart_echo
+  ./scripts/new_crate.sh my_sensor
 EOF
 }
 
@@ -61,8 +61,8 @@ CRATES_DIR="${REPO_ROOT}/crates"
 SCRIPTS_DIR="${REPO_ROOT}/scripts"
 TEMPLATE_DIR="${CRATES_DIR}/template"
 DEST_DIR="${CRATES_DIR}/${CRATE_NAME}"
-RUNNER_TEMPLATE="${SCRIPTS_DIR}/template.sh"
-DEST_RUNNER="${SCRIPTS_DIR}/${CRATE_NAME}.sh"
+RUNNER_TEMPLATE="${SCRIPTS_DIR}/runner/run_template.sh"
+DEST_RUNNER="${SCRIPTS_DIR}/runner/run_${CRATE_NAME}.sh"
 
 # Check template existence
 [[ -d "${TEMPLATE_DIR}" ]] || die "template directory not found: ${TEMPLATE_DIR}"
