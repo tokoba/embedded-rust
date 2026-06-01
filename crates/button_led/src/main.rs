@@ -26,7 +26,9 @@ bind_interrupts!(
 async fn main(spawner: Spawner) {
   let config = embassy_stm32::Config::default();
   let p = embassy_stm32::init(config);
-  info!("Hello World!");
+  info!(
+    "This is an embassy framework example. Button watcher using external interrupt and led control with embassy channel."
+  );
 
   // STM32F767ZI標準状態ではユーザーボタンは PC13 に割り当てられている
   // (SB17: ON, SB18: OFF)の半田付け状態であるため
