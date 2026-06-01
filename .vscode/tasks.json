@@ -2,6 +2,20 @@
   "version": "2.0.0",
   "tasks": [
     {
+      "label": "cargo build (button_led)",
+      "type": "shell",
+      "command": "cargo build --package button_led --target thumbv7em-none-eabihf",
+      "group": "build",
+      "problemMatcher": "$rustc"
+    },
+    {
+      "label": "cargo build release (button_led)",
+      "type": "shell",
+      "command": "cargo build --package button_led --target thumbv7em-none-eabihf --release",
+      "group": "build",
+      "problemMatcher": "$rustc"
+    },
+    {
       "label": "xtask: list host packages",
       "type": "shell",
       "command": "cargo xtask list-host-packages",

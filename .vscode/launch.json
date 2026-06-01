@@ -4,77 +4,9 @@
     {
       "type": "probe-rs-debug",
       "request": "launch",
-      "name": "Debug (probe-rs) blinky_single_task",
-      "cwd": "${workspaceFolder}",
-      "preLaunchTask": "cargo build (blinky_single_task)",
-      "runtimeExecutable": "probe-rs",
-      "runtimeArgs": ["dap-server"],
-      "chip": "STM32F767ZITx",
-      "flashingConfig": {
-        "flashingEnabled": true,
-        "haltAfterReset": false
-      },
-      "coreConfigs": [
-        {
-          "coreIndex": 0,
-          "programBinary": "${workspaceFolder}/target/thumbv7em-none-eabihf/debug/blinky",
-          "rttEnabled": true
-        }
-      ],
-      "consoleLogLevel": "Info"
-    },
-    {
-      "type": "probe-rs-debug",
-      "request": "launch",
-      "name": "Debug (probe-rs) blinky_multi_task",
-      "cwd": "${workspaceFolder}",
-      "preLaunchTask": "cargo build (blinky_multi_task)",
-      "runtimeExecutable": "probe-rs",
-      "runtimeArgs": ["dap-server"],
-      "chip": "STM32F767ZITx",
-      "flashingConfig": {
-        "flashingEnabled": true,
-        "haltAfterReset": false
-      },
-      "coreConfigs": [
-        {
-          "coreIndex": 0,
-          "programBinary": "${workspaceFolder}/target/thumbv7em-none-eabihf/debug/blinky",
-          "rttEnabled": true
-        }
-      ],
-      "consoleLogLevel": "Info"
-    },
-    {
-      "type": "probe-rs-debug",
-      "request": "launch",
-      "name": "Debug (probe-rs) button_exti",
-      "cwd": "${workspaceFolder}",
-      "preLaunchTask": "cargo build (button_exti)",
-      "runtimeExecutable": "probe-rs",
-      "runtimeArgs": ["dap-server"],
-      "chip": "STM32F767ZITx",
-      "flashingConfig": {
-        "flashingEnabled": true,
-        "haltAfterReset": false
-      },
-      "coreConfigs": [
-        {
-          "coreIndex": 0,
-          "programBinary": "${workspaceFolder}/target/thumbv7em-none-eabihf/debug/button_exti",
-          "rttEnabled": true
-        }
-      ],
-      "consoleLogLevel": "Info"
-    },
-    {
-      "type": "probe-rs-debug",
-      "request": "launch",
       "name": "Debug (probe-rs) button_led",
       "cwd": "${workspaceFolder}",
       "preLaunchTask": "cargo build (button_led)",
-      "runtimeExecutable": "probe-rs",
-      "runtimeArgs": ["dap-server"],
       "chip": "STM32F767ZITx",
       "flashingConfig": {
         "flashingEnabled": true,
@@ -84,22 +16,14 @@
         {
           "coreIndex": 0,
           "programBinary": "${workspaceFolder}/target/thumbv7em-none-eabihf/debug/button_led",
-          "rttEnabled": true
-        }
-      ],
-      "consoleLogLevel": "Info"
-    },
-    {
-      "type": "probe-rs-debug",
-      "request": "attach",
-      "name": "Attach (probe-rs) blinky_multi_task",
-      "cwd": "${workspaceFolder}",
-      "chip": "STM32F767ZITx",
-      "coreConfigs": [
-        {
-          "coreIndex": 0,
-          "programBinary": "${workspaceFolder}/target/thumbv7em-none-eabihf/debug/blinky",
-          "rttEnabled": true
+          "rttEnabled": true,
+          "rttChannelFormats": [
+            {
+              "channelNumber": 0,
+              "dataFormat": "Defmt",
+              "showTimestamp": true
+            }
+          ]
         }
       ],
       "consoleLogLevel": "Info"
@@ -107,11 +31,9 @@
     {
       "type": "probe-rs-debug",
       "request": "launch",
-      "name": "Debug (probe-rs) usb_serial",
+      "name": "Release (probe-rs) button_led",
       "cwd": "${workspaceFolder}",
-      "preLaunchTask": "cargo build (usb_serial)",
-      "runtimeExecutable": "probe-rs",
-      "runtimeArgs": ["dap-server"],
+      "preLaunchTask": "cargo build release (button_led)",
       "chip": "STM32F767ZITx",
       "flashingConfig": {
         "flashingEnabled": true,
@@ -120,60 +42,15 @@
       "coreConfigs": [
         {
           "coreIndex": 0,
-          "programBinary": "${workspaceFolder}/target/thumbv7em-none-eabihf/debug/usb_serial",
-          "rttEnabled": true
-        }
-      ],
-      "consoleLogLevel": "Info"
-    },
-    {
-      "type": "probe-rs-debug",
-      "request": "attach",
-      "name": "Attach (probe-rs) usb_serial",
-      "cwd": "${workspaceFolder}",
-      "chip": "STM32F767ZITx",
-      "coreConfigs": [
-        {
-          "coreIndex": 0,
-          "programBinary": "${workspaceFolder}/target/thumbv7em-none-eabihf/debug/usb_serial",
-          "rttEnabled": true
-        }
-      ],
-      "consoleLogLevel": "Info"
-    },
-    {
-      "type": "probe-rs-debug",
-      "request": "launch",
-      "name": "Debug (probe-rs) eth",
-      "cwd": "${workspaceFolder}",
-      "preLaunchTask": "cargo build (eth)",
-      "runtimeExecutable": "probe-rs",
-      "runtimeArgs": ["dap-server"],
-      "chip": "STM32F767ZITx",
-      "flashingConfig": {
-        "flashingEnabled": true,
-        "haltAfterReset": false
-      },
-      "coreConfigs": [
-        {
-          "coreIndex": 0,
-          "programBinary": "${workspaceFolder}/target/thumbv7em-none-eabihf/debug/eth",
-          "rttEnabled": true
-        }
-      ],
-      "consoleLogLevel": "Info"
-    },
-    {
-      "type": "probe-rs-debug",
-      "request": "attach",
-      "name": "Attach (probe-rs) eth",
-      "cwd": "${workspaceFolder}",
-      "chip": "STM32F767ZITx",
-      "coreConfigs": [
-        {
-          "coreIndex": 0,
-          "programBinary": "${workspaceFolder}/target/thumbv7em-none-eabihf/debug/eth",
-          "rttEnabled": true
+          "programBinary": "${workspaceFolder}/target/thumbv7em-none-eabihf/release/button_led",
+          "rttEnabled": true,
+          "rttChannelFormats": [
+            {
+              "channelNumber": 0,
+              "dataFormat": "Defmt",
+              "showTimestamp": true
+            }
+          ]
         }
       ],
       "consoleLogLevel": "Info"
