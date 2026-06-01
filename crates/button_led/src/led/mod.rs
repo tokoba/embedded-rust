@@ -1,41 +1,13 @@
 //! STM32F767ZI NUCLEO-144 ボード用 LED 操作用モジュール
-use defmt::Format;
 use embassy_stm32::Peri;
 use embassy_stm32::gpio::{self, Level, Output, Speed};
 
-/// LEDの点滅周期(ms)
-/// 緑
-pub const LED_GREEN_BLINK_PERIOD_MS: u64 = 300;
-/// 青
-pub const LED_BLUE_BLINK_PERIOD_MS: u64 = 1000;
-/// 赤
-pub const LED_RED_BLINK_PERIOD_MS: u64 = 2000;
+pub mod config;
+pub mod states;
+#[cfg(all(target_arch = "arm", target_os = "none"))]
+pub mod task;
 
-/// LEDの表示名
-#[allow(missing_docs)]
-#[derive(Copy, Clone, Debug, Format)]
-pub enum LedDisplayName {
-  Green,
-  Blue,
-  Red,
-}
-
-/// LEDのポート状態
-#[allow(missing_docs)]
-#[derive(Clone, Copy, PartialEq, Eq, Debug, Format)]
-pub enum LedPortState {
-  Off,
-  On,
-}
-
-/// LED制御状態
-#[allow(missing_docs)]
-#[derive(Clone, Copy, PartialEq, Eq, Debug, Format)]
-pub enum LedControlState {
-  Off,
-  On,
-  Blink,
-}
+use crate::led::states::{LedControlState, LedPortState};
 
 /// LED制御
 pub struct LedControl<'d> {

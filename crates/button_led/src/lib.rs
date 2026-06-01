@@ -4,8 +4,8 @@
 #[cfg(all(test, not(target_os = "none")))]
 extern crate std;
 
-/// button_fsm は常に公開（純粋ロジックのため）
-pub mod button_fsm;
+/// button モジュール は常に公開（純粋ロジックのため）
+pub mod button;
 
 #[cfg(all(target_arch = "arm", target_os = "none"))]
 pub mod led;

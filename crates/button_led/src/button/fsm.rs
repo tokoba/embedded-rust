@@ -1,51 +1,11 @@
-//! Button FSM（有限状態機械）
+//! Button FSM(Finite State Machine) モジュール
+
+use crate::button::config::{DEBOUNCE_MS, LONG_PRESS_MS};
+use crate::button::events::{ButtonEvent, PhysicalEvent};
 
 // ✅ defmt は ARM ターゲットでのみ import
 #[cfg(all(target_arch = "arm", target_os = "none"))]
 use defmt::Format;
-
-/// ディバウンス時間(一般的に10msec-20msec)
-pub const DEBOUNCE_MS: u64 = 20;
-/// 長押し判定時間
-pub const LONG_PRESS_MS: u64 = 1000;
-
-/// ボタンから外部に通知するイベント
-#[derive(Clone, Copy, PartialEq, Eq, Debug)]
-#[cfg_attr(all(target_arch = "arm", target_os = "none"), derive(Format))]
-pub enum ButtonEvent {
-  /// 短押しイベント（ディバウンス確認後に即時発行）
-  ShortPress,
-  /// 長押しイベント
-  LongPress,
-  /// リリースイベント
-  Released,
-}
-
-/// ボタンの状態
-#[derive(Clone, Copy, PartialEq, Eq, Debug)]
-#[cfg_attr(all(target_arch = "arm", target_os = "none"), derive(Format))]
-pub enum ButtonState {
-  /// リリース状態
-  Released,
-  /// プレス状態
-  Pressed,
-}
-
-/// GPIOから入力される物理的なイベント
-#[derive(Clone, Copy, PartialEq, Eq, Debug)]
-#[cfg_attr(all(target_arch = "arm", target_os = "none"), derive(Format))]
-pub enum PhysicalEvent {
-  /// 立ち上がりエッジ検出
-  RisingEdge,
-  /// 立ち下がりエッジ検出
-  FallingEdge,
-  /// ディバウンス待ち完了後、ピンがHigh（押下継続）
-  DebouncedHigh,
-  /// ディバウンス待ち完了後、ピンがLow（リリースまたはノイズ）
-  DebouncedLow,
-  /// タイムアウト（長押し判定用）
-  Timeout,
-}
 
 /// FSMが呼び出し元に指示する次の待機動作
 #[derive(Clone, Copy, PartialEq, Eq, Debug)]
