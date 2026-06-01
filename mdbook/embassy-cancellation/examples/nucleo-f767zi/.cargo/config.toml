@@ -3,10 +3,14 @@ runner = "probe-rs run --chip STM32F767ZITx"
 
 [target.thumbv7em-none-eabihf]
 rustflags = [
-  "-C", "link-arg=-Tlink.x",
-  "-C", "link-arg=-Tdefmt.x",
+  # build.rs で指定する
+  # "-C",
+  # "link-arg=-nmagic",
+  # "-C",
+  # "link-arg=-Tlink.x",
+  # "-C",
+  # "link-arg=-Tdefmt.x",
 ]
-
 [build]
 target = "thumbv7em-none-eabihf"
 

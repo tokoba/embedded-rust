@@ -3,7 +3,7 @@
     <head>
         <!-- Book generated using mdBook -->
         <meta charset="UTF-8">
-        <title>FreeRTOS/NORTi からの移行観点 - Embassy-rs 実践タスク制御ガイド</title>
+        <title>FreeRTOS / NORTi / C# / Tokio からの移行 - Embassy-rs 実践タスク制御ガイド</title>
 
 
         <!-- Custom HTML head -->
@@ -35,10 +35,10 @@
             const path_to_root = "";
             const default_light_theme = "light";
             const default_dark_theme = "navy";
-            window.path_to_searchindex_js = "searchindex-3c1e0eac.js";
+            window.path_to_searchindex_js = "searchindex-adc767c4.js";
         </script>
         <!-- Start loading toc.js asap -->
-        <script src="toc-cf0508f1.js"></script>
+        <script src="toc-505db5c0.js"></script>
     </head>
     <body>
     <div id="mdbook-help-container">
@@ -143,10 +143,10 @@
                         <a href="print.html" title="Print this book" aria-label="Print this book">
                             <span class=fa-svg id="print-button"><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 512 512"><!--! Font Awesome Free 6.2.0 by @fontawesome - https://fontawesome.com License - https://fontawesome.com/license/free (Icons: CC BY 4.0, Fonts: SIL OFL 1.1, Code: MIT License) Copyright 2022 Fonticons, Inc. --><path d="M128 0C92.7 0 64 28.7 64 64v96h64V64H354.7L384 93.3V160h64V93.3c0-17-6.7-33.3-18.7-45.3L400 18.7C388 6.7 371.7 0 354.7 0H128zM384 352v32 64H128V384 368 352H384zm64 32h32c17.7 0 32-14.3 32-32V256c0-35.3-28.7-64-64-64H64c-35.3 0-64 28.7-64 64v96c0 17.7 14.3 32 32 32H64v64c0 35.3 28.7 64 64 64H384c35.3 0 64-28.7 64-64V384zm-16-88c-13.3 0-24-10.7-24-24s10.7-24 24-24s24 10.7 24 24s-10.7 24-24 24z"/></svg></span>
                         </a>
-                        <a href="https://github.com/your-org/embassy-task-control-guide" title="Git repository" aria-label="Git repository">
+                        <a href="https://github.com/tokoba/embedded-rust" title="Git repository" aria-label="Git repository">
                             <span class=fa-svg><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 496 512"><!--! Font Awesome Free 6.2.0 by @fontawesome - https://fontawesome.com License - https://fontawesome.com/license/free (Icons: CC BY 4.0, Fonts: SIL OFL 1.1, Code: MIT License) Copyright 2022 Fonticons, Inc. --><path d="M165.9 397.4c0 2-2.3 3.6-5.2 3.6-3.3.3-5.6-1.3-5.6-3.6 0-2 2.3-3.6 5.2-3.6 3-.3 5.6 1.3 5.6 3.6zm-31.1-4.5c-.7 2 1.3 4.3 4.3 4.9 2.6 1 5.6 0 6.2-2s-1.3-4.3-4.3-5.2c-2.6-.7-5.5.3-6.2 2.3zm44.2-1.7c-2.9.7-4.9 2.6-4.6 4.9.3 2 2.9 3.3 5.9 2.6 2.9-.7 4.9-2.6 4.6-4.6-.3-1.9-3-3.2-5.9-2.9zM244.8 8C106.1 8 0 113.3 0 252c0 110.9 69.8 205.8 169.5 239.2 12.8 2.3 17.3-5.6 17.3-12.1 0-6.2-.3-40.4-.3-61.4 0 0-70 15-84.7-29.8 0 0-11.4-29.1-27.8-36.6 0 0-22.9-15.7 1.6-15.4 0 0 24.9 2 38.6 25.8 21.9 38.6 58.6 27.5 72.9 20.9 2.3-16 8.8-27.1 16-33.7-55.9-6.2-112.3-14.3-112.3-110.5 0-27.5 7.6-41.3 23.6-58.9-2.6-6.5-11.1-33.3 2.6-67.9 20.9-6.5 69 27 69 27 20-5.6 41.5-8.5 62.8-8.5s42.8 2.9 62.8 8.5c0 0 48.1-33.6 69-27 13.7 34.7 5.2 61.4 2.6 67.9 16 17.7 25.8 31.5 25.8 58.9 0 96.5-58.9 104.2-114.8 110.5 9.2 7.9 17 22.9 17 46.4 0 33.7-.3 75.4-.3 83.6 0 6.5 4.6 14.4 17.3 12.1C428.2 457.8 496 362.9 496 252 496 113.3 383.5 8 244.8 8zM97.2 352.9c-1.3 1-1 3.3.7 5.2 1.6 1.6 3.9 2.3 5.2 1 1.3-1 1-3.3-.7-5.2-1.6-1.6-3.9-2.3-5.2-1zm-10.8-8.1c-.7 1.3.3 2.9 2.3 3.9 1.6 1 3.6.7 4.3-.7.7-1.3-.3-2.9-2.3-3.9-2-.6-3.6-.3-4.3.7zm32.4 35.6c-1.6 1.3-1 4.3 1.3 6.2 2.3 2.3 5.2 2.6 6.5 1 1.3-1.3.7-4.3-1.3-6.2-2.2-2.3-5.2-2.6-6.5-1zm-11.4-14.7c-1.6 1-1.6 3.6 0 5.9 1.6 2.3 4.3 3.3 5.6 2.3 1.6-1.3 1.6-3.9 0-6.2-1.4-2.3-4-3.3-5.6-2z"/></svg></span>
                         </a>
-                        <a href="https://github.com/your-org/embassy-task-control-guide/edit/main/src/rtos_mapping.md" title="Suggest an edit" aria-label="Suggest an edit" rel="edit">
+                        <a href="https://github.com/tokoba/embedded-rust/edit/main/src/rtos_mapping.md" title="Suggest an edit" aria-label="Suggest an edit" rel="edit">
                             <span class=fa-svg id="git-edit-button"><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 512 512"><!--! Font Awesome Free 6.2.0 by @fontawesome - https://fontawesome.com License - https://fontawesome.com/license/free (Icons: CC BY 4.0, Fonts: SIL OFL 1.1, Code: MIT License) Copyright 2022 Fonticons, Inc. --><path d="M421.7 220.3l-11.3 11.3-22.6 22.6-205 205c-6.6 6.6-14.8 11.5-23.8 14.1L30.8 511c-8.4 2.5-17.5 .2-23.7-6.1S-1.5 489.7 1 481.2L38.7 353.1c2.6-9 7.5-17.2 14.1-23.8l205-205 22.6-22.6 11.3-11.3 33.9 33.9 62.1 62.1 33.9 33.9zM96 353.9l-9.3 9.3c-.9 .9-1.6 2.1-2 3.4l-25.3 86 86-25.3c1.3-.4 2.5-1.1 3.4-2l9.3-9.3H112c-8.8 0-16-7.2-16-16V353.9zM453.3 19.3l39.4 39.4c25 25 25 65.5 0 90.5l-14.5 14.5-22.6 22.6-11.3 11.3-33.9-33.9-62.1-62.1L314.3 67.7l11.3-11.3 22.6-22.6 14.5-14.5c25-25 65.5-25 90.5 0z"/></svg></span>
                         </a>
 
@@ -180,44 +180,111 @@
 
                 <div id="mdbook-content" class="content">
                     <main>
-                        <h1 id="freertosnorti-からの移行観点"><a class="header" href="#freertosnorti-からの移行観点">FreeRTOS/NORTi からの移行観点</a></h1>
+                        <h1 id="freertos--norti--c--tokio-からの移行"><a class="header" href="#freertos--norti--c--tokio-からの移行">FreeRTOS / NORTi / C# / Tokio からの移行</a></h1>
 <p>Embassy は RTOS ではありませんが、RTOS 的な設計経験は非常に有効です。
 ただし、対応関係を誤ると task 数が増えすぎたり、キャンセル設計が不明瞭になります。</p>
+<h2 id="freertos--norti--embassy-対応表"><a class="header" href="#freertos--norti--embassy-対応表">FreeRTOS / NORTi → Embassy 対応表</a></h2>
 <div class="table-wrapper">
 <table>
 <thead>
 <tr><th>RTOS / NORTi 的概念</th><th>Embassy での対応</th><th>設計上の注意</th></tr>
 </thead>
 <tbody>
-<tr><td>task</td><td><code>#[embassy_executor::task]</code></td><td>task は静的割り当て。都度生成ではなく常駐化</td></tr>
-<tr><td>mailbox</td><td><code>Channel</code></td><td>bounded capacity と overflow 方針を決める</td></tr>
-<tr><td>event flag</td><td><code>Signal</code> / <code>Watch</code> / <code>PubSubChannel</code></td><td>1対1か1対多かで選ぶ</td></tr>
+<tr><td>task 生成</td><td><code>#[embassy_executor::task]</code></td><td>task は <strong>静的割り当て</strong>。都度生成ではなく常駐化</td></tr>
+<tr><td>mailbox</td><td><code>Channel&lt;M, T, N&gt;</code></td><td>bounded capacity と overflow 方針を決める</td></tr>
+<tr><td>event flag</td><td><code>Signal</code> / <code>Watch</code> / <code>PubSubChannel</code></td><td>1 対 1 か 1 対多かで選ぶ</td></tr>
 <tr><td>cyclic handler</td><td><code>Timer::after</code> loop</td><td>handler ではなく async task の周期 loop にする</td></tr>
 <tr><td>alarm</td><td><code>Timer::after</code> / <code>with_timeout</code></td><td>cancel と <code>select</code> しやすい</td></tr>
-<tr><td>mutex</td><td><code>Mutex</code> / owner task</td><td>peripheral は owner task 化が安全</td></tr>
-<tr><td>rel_wai / forced release</td><td>cancel command + ACK</td><td>強制解除ではなく協調停止</td></tr>
+<tr><td>mutex</td><td><code>Mutex&lt;M, T&gt;</code> / owner task</td><td>peripheral は owner task 化が安全</td></tr>
+<tr><td>rel_wai / forced release</td><td>cancel command + ACK</td><td><strong>強制解除ではなく協調停止</strong></td></tr>
 <tr><td>memory pool</td><td>static buffer / bounded channel</td><td>heap ではなく容量を型と static で見積もる</td></tr>
+<tr><td>task priority</td><td><code>InterruptExecutor</code></td><td>thread-mode では全 task が同一優先度</td></tr>
+<tr><td>semaphore</td><td><code>Channel&lt;M, (), N&gt;</code></td><td>Channel をセマフォとして使える</td></tr>
+<tr><td>software timer</td><td><code>Timer::after</code> + <code>select</code></td><td>専用の timer callback 機構はない</td></tr>
 </tbody>
 </table>
 </div>
-<h2 id="移行時の考え方"><a class="header" href="#移行時の考え方">移行時の考え方</a></h2>
+<h2 id="c--tokio--embassy-対応表"><a class="header" href="#c--tokio--embassy-対応表">C# / Tokio → Embassy 対応表</a></h2>
+<p>C# の <code>CancellationToken</code> や Tokio の <code>tokio_util::sync::CancellationToken</code> に馴染みのある方向けの対応表です。</p>
+<div class="table-wrapper">
+<table>
+<thead>
+<tr><th>C# / Tokio</th><th>Embassy</th><th>補足</th></tr>
+</thead>
+<tbody>
+<tr><td><code>CancellationToken</code></td><td><code>Signal&lt;M, ()&gt;</code> / <code>Watch&lt;M, State, N&gt;</code></td><td>個別 cancel → Signal、global → Watch</td></tr>
+<tr><td><code>CancellationTokenSource.Cancel()</code></td><td><code>CANCEL.signal(())</code> / <code>SYS_STATE.sender().send(StopRequested)</code></td><td></td></tr>
+<tr><td><code>token.IsCancellationRequested</code></td><td><code>CANCEL.signaled()</code> / <code>AtomicBool::load()</code></td><td>ポーリング的な確認</td></tr>
+<tr><td><code>token.ThrowIfCancellationRequested()</code></td><td><code>.await</code> 境界で <code>select</code> + <code>match</code></td><td>例外ではなく enum 分岐</td></tr>
+<tr><td><code>Task.WhenAny</code></td><td><code>select(a, b)</code> / <code>select3(a, b, c)</code></td><td>先に完了した future を返す</td></tr>
+<tr><td><code>Task.WhenAll</code></td><td><code>join(a, b)</code></td><td>両方の完了を待つ</td></tr>
+<tr><td><code>TaskTracker.wait()</code></td><td>ACK <code>Channel</code> + supervisor state machine</td><td>全 worker の停止完了を supervisor が追跡</td></tr>
+<tr><td><code>linked token</code></td><td><code>Watch</code> + 個別 <code>Signal</code> の 2 段構成</td><td>global stop → Watch、個別 → Signal</td></tr>
+<tr><td><code>IHostedService.StopAsync</code></td><td><code>Command::Stop</code> + <code>Status::Stopped</code> ACK</td><td>段階的な graceful shutdown</td></tr>
+<tr><td><code>try { } catch (OperationCancelledException)</code></td><td><code>Either::Second(_)</code> 分岐</td><td>例外ではなく分岐</td></tr>
+</tbody>
+</table>
+</div>
+<h3 id="c-との重要な違い"><a class="header" href="#c-との重要な違い">C# との重要な違い</a></h3>
+<ol>
+<li><strong>例外ではなく enum 分岐</strong>: C# は <code>OperationCancelledException</code> を throw しますが、Embassy では <code>select</code> の <code>Either::Second</code> で処理します</li>
+<li><strong>GC がない</strong>: C# は GC がリソースを解放しますが、Embassy では <code>Drop</code> と明示的 cleanup が必要です</li>
+<li><strong>静的割り当て</strong>: C# は <code>Task.Run</code> で動的生成しますが、Embassy の task は static です</li>
+<li><strong>Single-threaded</strong>: Embassy は協調的シングルスレッドです。C# の <code>Task</code> のような並列実行はありません</li>
+</ol>
+<h2 id="移行時の実践ポイント"><a class="header" href="#移行時の実践ポイント">移行時の実践ポイント</a></h2>
 <h3 id="1-タスク起動同期"><a class="header" href="#1-タスク起動同期">1. タスク起動同期</a></h3>
 <p>NORTi で <code>StaTaskSync</code> のように起動完了を待っていた場合、Embassy では <code>Status::Initialized</code> を ACK channel で返す構成にします。</p>
+<pre><code class="language-rust">#[embassy_executor::task]
+async fn device_task() {
+    // 初期化処理
+    init_device().await;
+    STATUS_CH.send(Status::Initialized).await;  // ← 起動完了 ACK
+
+    // メインループ
+    loop {
+        let cmd = CMD_CH.receive().await;
+        // ...
+    }
+}
+
+// supervisor 側
+async fn start_device_and_wait() {
+    spawner.spawn(device_task()).unwrap();
+    // 起動完了を待つ
+    loop {
+        if let Status::Initialized = STATUS_CH.receive().await {
+            info!("device task initialized");
+            break;
+        }
+    }
+}</code></pre>
 <h3 id="2-メッセージ解放"><a class="header" href="#2-メッセージ解放">2. メッセージ解放</a></h3>
-<p>Embassy の <code>Channel</code> は値を move します。メモリプールを明示的に解放する設計とは異なりますが、大きいバッファは static pool / heapless buffer / owner task で扱います。</p>
+<p>Embassy の <code>Channel</code> は値を <strong>move</strong> します。C の <code>rel_blk</code> / <code>rel_msg</code> のようなメモリプール解放は不要です。
+ただし、大きなバッファは static pool / heapless buffer / owner task で扱います。</p>
+<pre><code class="language-rust">// ✗ 大きなデータを Channel で毎回コピー
+static DATA_CH: Channel&lt;CriticalSectionRawMutex, [u8; 4096], 2&gt; = Channel::new();
+
+// ✓ index / reference を渡し、データは static buffer に置く
+static BUFFERS: [Mutex&lt;CriticalSectionRawMutex, RefCell&lt;[u8; 4096]&gt;&gt;; 2] = /* ... */;
+static BUF_IDX_CH: Channel&lt;CriticalSectionRawMutex, usize, 2&gt; = Channel::new();</code></pre>
 <h3 id="3-周期タイマ"><a class="header" href="#3-周期タイマ">3. 周期タイマ</a></h3>
 <p>周期ハンドラに処理を置くのではなく、task 内で次のように書きます。</p>
-<pre class="playground"><code class="language-rust"><span class="boring">#![allow(unused)]
-</span><span class="boring">fn main() {
-</span>loop {
-    do_periodic_step().await;
-    Timer::after_millis(10).await;
-}
-<span class="boring">}</span></code></pre>
-<h3 id="4-停止同期"><a class="header" href="#4-停止同期">4. 停止同期</a></h3>
-<p>停止要求と停止完了は分けます。</p>
-<pre><code class="language-text">Supervisor -&gt; Worker: Command::Stop
-Worker -&gt; Supervisor: Status::Stopped
+<pre><code class="language-rust">#[embassy_executor::task]
+async fn periodic_task() {
+    let mut ticker = embassy_time::Ticker::every(Duration::from_millis(10));
+    loop {
+        do_periodic_step().await;
+        ticker.next().await;  // 一定周期を保つ
+    }
+}</code></pre>
+<p><code>Timer::after</code> と違い、<code>Ticker</code> は処理時間のドリフトを補正します。</p>
+<h3 id="4-停止同期graceful-shutdown"><a class="header" href="#4-停止同期graceful-shutdown">4. 停止同期（graceful shutdown）</a></h3>
+<p>停止要求と停止完了は <strong>必ず分けます</strong>。</p>
+<pre><code class="language-text">Supervisor → Worker: Command::Stop
+Worker:              cleanup (PWM off, DMA stop, ...)
+Worker → Supervisor: Status::Stopped    ← これが「止まった」事実
+Supervisor:          次の遷移 or shutdown
 </code></pre>
 
                     </main>

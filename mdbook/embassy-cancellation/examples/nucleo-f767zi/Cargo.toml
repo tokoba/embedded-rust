@@ -1,7 +1,7 @@
 [package]
 name = "nucleo-f767zi"
 version = "0.1.0"
-edition = "2021"
+edition = "2024"
 
 [dependencies]
 embassy-executor = { version = "0.10.0", features = [
@@ -14,8 +14,6 @@ embassy-time = { version = "0.5.1", features = ["tick-hz-32_768"] }
 embassy-stm32 = { version = "0.6.0", features = [
   "stm32f767zi",
   "time-driver-any",
-  "exti",
-  "memory-x",
   "exti",
   "single-bank",
 ] }

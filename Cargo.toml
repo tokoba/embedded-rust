@@ -1,5 +1,9 @@
 [workspace]
-members = ["crates/*", "xtask"]
+members = [
+  "crates/*",
+  "xtask",
+  "mdbook/embassy-cancellation/examples/nucleo-f767zi",
+]
 exclude = ["crates/_template-*"]
 resolver = "3"
 

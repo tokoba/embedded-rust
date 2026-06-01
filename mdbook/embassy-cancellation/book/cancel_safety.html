@@ -3,7 +3,7 @@
     <head>
         <!-- Book generated using mdBook -->
         <meta charset="UTF-8">
-        <title>用語集 - Embassy-rs 実践タスク制御ガイド</title>
+        <title>キャンセル安全性とハードウェア - Embassy-rs 実践タスク制御ガイド</title>
 
 
         <!-- Custom HTML head -->
@@ -146,7 +146,7 @@
                         <a href="https://github.com/tokoba/embedded-rust" title="Git repository" aria-label="Git repository">
                             <span class=fa-svg><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 496 512"><!--! Font Awesome Free 6.2.0 by @fontawesome - https://fontawesome.com License - https://fontawesome.com/license/free (Icons: CC BY 4.0, Fonts: SIL OFL 1.1, Code: MIT License) Copyright 2022 Fonticons, Inc. --><path d="M165.9 397.4c0 2-2.3 3.6-5.2 3.6-3.3.3-5.6-1.3-5.6-3.6 0-2 2.3-3.6 5.2-3.6 3-.3 5.6 1.3 5.6 3.6zm-31.1-4.5c-.7 2 1.3 4.3 4.3 4.9 2.6 1 5.6 0 6.2-2s-1.3-4.3-4.3-5.2c-2.6-.7-5.5.3-6.2 2.3zm44.2-1.7c-2.9.7-4.9 2.6-4.6 4.9.3 2 2.9 3.3 5.9 2.6 2.9-.7 4.9-2.6 4.6-4.6-.3-1.9-3-3.2-5.9-2.9zM244.8 8C106.1 8 0 113.3 0 252c0 110.9 69.8 205.8 169.5 239.2 12.8 2.3 17.3-5.6 17.3-12.1 0-6.2-.3-40.4-.3-61.4 0 0-70 15-84.7-29.8 0 0-11.4-29.1-27.8-36.6 0 0-22.9-15.7 1.6-15.4 0 0 24.9 2 38.6 25.8 21.9 38.6 58.6 27.5 72.9 20.9 2.3-16 8.8-27.1 16-33.7-55.9-6.2-112.3-14.3-112.3-110.5 0-27.5 7.6-41.3 23.6-58.9-2.6-6.5-11.1-33.3 2.6-67.9 20.9-6.5 69 27 69 27 20-5.6 41.5-8.5 62.8-8.5s42.8 2.9 62.8 8.5c0 0 48.1-33.6 69-27 13.7 34.7 5.2 61.4 2.6 67.9 16 17.7 25.8 31.5 25.8 58.9 0 96.5-58.9 104.2-114.8 110.5 9.2 7.9 17 22.9 17 46.4 0 33.7-.3 75.4-.3 83.6 0 6.5 4.6 14.4 17.3 12.1C428.2 457.8 496 362.9 496 252 496 113.3 383.5 8 244.8 8zM97.2 352.9c-1.3 1-1 3.3.7 5.2 1.6 1.6 3.9 2.3 5.2 1 1.3-1 1-3.3-.7-5.2-1.6-1.6-3.9-2.3-5.2-1zm-10.8-8.1c-.7 1.3.3 2.9 2.3 3.9 1.6 1 3.6.7 4.3-.7.7-1.3-.3-2.9-2.3-3.9-2-.6-3.6-.3-4.3.7zm32.4 35.6c-1.6 1.3-1 4.3 1.3 6.2 2.3 2.3 5.2 2.6 6.5 1 1.3-1.3.7-4.3-1.3-6.2-2.2-2.3-5.2-2.6-6.5-1zm-11.4-14.7c-1.6 1-1.6 3.6 0 5.9 1.6 2.3 4.3 3.3 5.6 2.3 1.6-1.3 1.6-3.9 0-6.2-1.4-2.3-4-3.3-5.6-2z"/></svg></span>
                         </a>
-                        <a href="https://github.com/tokoba/embedded-rust/edit/main/src/glossary.md" title="Suggest an edit" aria-label="Suggest an edit" rel="edit">
+                        <a href="https://github.com/tokoba/embedded-rust/edit/main/src/cancel_safety.md" title="Suggest an edit" aria-label="Suggest an edit" rel="edit">
                             <span class=fa-svg id="git-edit-button"><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 512 512"><!--! Font Awesome Free 6.2.0 by @fontawesome - https://fontawesome.com License - https://fontawesome.com/license/free (Icons: CC BY 4.0, Fonts: SIL OFL 1.1, Code: MIT License) Copyright 2022 Fonticons, Inc. --><path d="M421.7 220.3l-11.3 11.3-22.6 22.6-205 205c-6.6 6.6-14.8 11.5-23.8 14.1L30.8 511c-8.4 2.5-17.5 .2-23.7-6.1S-1.5 489.7 1 481.2L38.7 353.1c2.6-9 7.5-17.2 14.1-23.8l205-205 22.6-22.6 11.3-11.3 33.9 33.9 62.1 62.1 33.9 33.9zM96 353.9l-9.3 9.3c-.9 .9-1.6 2.1-2 3.4l-25.3 86 86-25.3c1.3-.4 2.5-1.1 3.4-2l9.3-9.3H112c-8.8 0-16-7.2-16-16V353.9zM453.3 19.3l39.4 39.4c25 25 25 65.5 0 90.5l-14.5 14.5-22.6 22.6-11.3 11.3-33.9-33.9-62.1-62.1L314.3 67.7l11.3-11.3 22.6-22.6 14.5-14.5c25-25 65.5-25 90.5 0z"/></svg></span>
                         </a>
 
@@ -180,59 +180,172 @@
 
                 <div id="mdbook-content" class="content">
                     <main>
-                        <h1 id="用語集"><a class="header" href="#用語集">用語集</a></h1>
-<h2 id="executor"><a class="header" href="#executor">Executor</a></h2>
-<p>async task を poll する実行器です。Embassy では thread-mode <code>Executor</code> と interrupt-mode <code>InterruptExecutor</code> の 2 種類があります。</p>
-<h2 id="spawner"><a class="header" href="#spawner">Spawner</a></h2>
-<p>task を executor に登録するための handle です。<code>spawner.spawn(task()).unwrap()</code> のように使います。</p>
-<h2 id="thread-mode"><a class="header" href="#thread-mode">Thread-mode</a></h2>
-<p>Cortex-M の通常実行コンテキスト（Handler mode ではないコンテキスト）です。Embassy の基本 executor はここで動きます。最低優先度であり、すべての割り込みにプリエンプトされます。</p>
-<h2 id="interrupt-modehandler-mode"><a class="header" href="#interrupt-modehandler-mode">Interrupt-mode（Handler mode）</a></h2>
-<p>割り込みコンテキストです。<code>InterruptExecutor</code> は task をこの文脈で poll します。NVIC 優先度によりプリエンプションが制御されます。</p>
-<h2 id="waker"><a class="header" href="#waker">Waker</a></h2>
-<p>待機中の future を再度 poll 可能にする通知機構です。peripheral IRQ ハンドラが waker を呼ぶことで、対応する task が ready 状態になります。</p>
-<h2 id="wfe--sev"><a class="header" href="#wfe--sev">WFE / SEV</a></h2>
-<p><strong>Wait For Event</strong> / <strong>Send Event</strong>。Cortex-M の命令です。Embassy の thread-mode executor は、全 task が pending のとき WFE で CPU をスリープさせ、waker が SEV で起床させます。</p>
-<h2 id="signal"><a class="header" href="#signal">Signal</a></h2>
-<p><code>embassy_sync::signal::Signal&lt;M, T&gt;</code>。単一 consumer 向けの最新値通知プリミティブです。個別 cancel に向きます。最新の値で上書きされるため、全メッセージの受信は保証されません。</p>
-<h2 id="channel"><a class="header" href="#channel">Channel</a></h2>
-<p><code>embassy_sync::channel::Channel&lt;M, T, N&gt;</code>。bounded queue（容量 N の FIFO キュー）です。command / event / ACK に向きます。<code>send</code> は空きが出るまで await し、<code>try_send</code> は即時に結果を返します。</p>
-<h2 id="watch"><a class="header" href="#watch">Watch</a></h2>
-<p><code>embassy_sync::watch::Watch&lt;M, T, N&gt;</code>。複数 receiver が最新 state を観測するためのプリミティブです。値が変わるまで <code>changed().await</code> で待機します。全イベント履歴は残りません。</p>
-<h2 id="pubsubchannel"><a class="header" href="#pubsubchannel">PubSubChannel</a></h2>
-<p><code>embassy_sync::pubsub::PubSubChannel</code>。1 対多のイベント配信プリミティブです。各 subscriber が独立にメッセージを消費します。</p>
-<h2 id="協調的キャンセルcooperative-cancellation"><a class="header" href="#協調的キャンセルcooperative-cancellation">協調的キャンセル（Cooperative Cancellation）</a></h2>
-<p>task 側が cancel 要求を検知し、安全な <code>.await</code> 境界で処理を抜ける設計パターンです。強制 kill とは異なり、task 自身がリソースの後始末を行います。</p>
-<h2 id="cancel-safe"><a class="header" href="#cancel-safe">cancel-safe</a></h2>
-<p>future が途中で drop されても、所有する state / buffer / peripheral が破綻しない性質です。<code>select</code> で負けた future は drop されるため、cancel-safe でないドライバは直接 <code>select</code> に入れてはいけません。</p>
-<h2 id="select"><a class="header" href="#select">select</a></h2>
-<p><code>embassy_futures::select::select(a, b)</code>。2 つの future を同時に待ち、先に完了した方を返す combinator です。負けた future は drop されます。</p>
-<h2 id="drop"><a class="header" href="#drop">Drop</a></h2>
-<p>Rust の trait で、値がスコープを抜けるときに呼ばれるデストラクタです。<code>select</code> で負けた future の <code>Drop::drop()</code> が呼ばれることが、キャンセル安全性の鍵になります。</p>
-<h2 id="supervisor-task"><a class="header" href="#supervisor-task">supervisor task</a></h2>
-<p>複数の worker task を統括し、command の分配・state 管理・fault 処理を担当する task です。</p>
-<h2 id="worker-task"><a class="header" href="#worker-task">worker task</a></h2>
-<p>実際の処理（計測・制御・通信）を行う task です。supervisor から command を受け取り、status を返します。</p>
-<h2 id="owner-task"><a class="header" href="#owner-task">owner task</a></h2>
-<p>特定の peripheral を排他的に所有し、Channel 経由でコマンドを受けて操作する task です。cancel-safe 不明のドライバを安全に扱うためのパターンです。</p>
-<h2 id="ackacknowledge"><a class="header" href="#ackacknowledge">ACK（Acknowledge）</a></h2>
-<p>worker が supervisor に返す完了通知です。停止要求は「要求」であり、ACK が「完了した事実」を伝えます。</p>
-<h2 id="nvic"><a class="header" href="#nvic">NVIC</a></h2>
-<p><strong>Nested Vectored Interrupt Controller</strong>。Cortex-M の割り込みコントローラです。優先度設定により InterruptExecutor の実行優先度が決まります。</p>
-<h2 id="defmt"><a class="header" href="#defmt">defmt</a></h2>
-<p>Embassy エコシステムで標準的に使われる、組み込み向け高効率ログフレームワークです。RTT（Real-Time Transfer）経由でホスト PC にログを転送します。</p>
-<h2 id="probe-rs"><a class="header" href="#probe-rs">probe-rs</a></h2>
-<p>Rust 製のデバッグプローブツールです。書き込み・デバッグ・RTT ログ表示に使用します。</p>
+                        <h1 id="キャンセル安全性とハードウェア"><a class="header" href="#キャンセル安全性とハードウェア">キャンセル安全性とハードウェア</a></h1>
+<p><code>select</code> で負けた future は <strong>drop</strong> されます。
+その future が DMA / peripheral / protocol state を保持していた場合、
+drop 時にハードウェアが安全に停止できるかを確認する必要があります。</p>
+<p>これを <strong>cancel-safe（キャンセル安全）</strong> と呼びます。</p>
+<h2 id="drop-と-cancel-safe-の関係"><a class="header" href="#drop-と-cancel-safe-の関係">Drop と cancel-safe の関係</a></h2>
+<p>Rust では、値が scope を抜けると <code>Drop::drop()</code> が呼ばれます。
+<code>select</code> で負けた future も同様に drop されるため、drop 時の動作が安全性の鍵になります。</p>
+<pre><code class="language-text">select(dma_transfer(), cancel.wait())
+  → cancel.wait() が先に完了
+  → dma_transfer() の future が drop される
+  → Drop::drop() が呼ばれる
+  → DMA は停止する？ バッファは有効？ ピンは安全状態？
+</code></pre>
+<h2 id="embassy-stm32-hal-の-cancel-safe-性"><a class="header" href="#embassy-stm32-hal-の-cancel-safe-性">embassy-stm32 HAL の cancel-safe 性</a></h2>
+<p>embassy-stm32 の多くの非同期 API は、<strong>Drop 時に転送を中止するよう実装されています</strong>。
+ただし、すべてのドライバが完全に cancel-safe であるとは保証されていません。</p>
+<h3 id="一般的に安全なパターン"><a class="header" href="#一般的に安全なパターン">一般的に安全なパターン</a></h3>
+<div class="table-wrapper">
+<table>
+<thead>
+<tr><th>ペリフェラル</th><th>操作</th><th>cancel-safe</th><th>備考</th></tr>
+</thead>
+<tbody>
+<tr><td>GPIO</td><td>Output set/clear</td><td>✅</td><td>非同期ではないため drop の影響なし</td></tr>
+<tr><td>Timer</td><td><code>Timer::after</code></td><td>✅</td><td>drop 時に即座にキャンセル</td></tr>
+<tr><td>EXTI</td><td><code>wait_for_*_edge</code></td><td>✅</td><td>drop 時に待機解除</td></tr>
+<tr><td>UART (polling)</td><td><code>read</code>, <code>write</code></td><td>⚠️</td><td>途中 drop でバッファが中途半端になりうる</td></tr>
+<tr><td>SPI + DMA</td><td><code>transfer</code></td><td>⚠️</td><td>Drop 実装が DMA を停止するが、CS ピンの管理は hand</td></tr>
+<tr><td>I2C</td><td><code>read</code>, <code>write</code></td><td>⚠️</td><td>プロトコル途中での drop は bus を不定状態にしうる</td></tr>
+</tbody>
+</table>
+</div>
+<h3 id="注意が必要なケース"><a class="header" href="#注意が必要なケース">注意が必要なケース</a></h3>
+<h4 id="dma-転送"><a class="header" href="#dma-転送">DMA 転送</a></h4>
+<pre><code class="language-rust">// ⚠️ DMA 転送中に drop される可能性がある
+match select(spi.transfer(&amp;mut buf), cancel.wait()).await {
+    Either::First(Ok(())) =&gt; { /* 転送完了 */ }
+    Either::Second(_) =&gt; {
+        // spi.transfer の future が drop される
+        // → DMA は HAL が停止するが、buf の内容は不定
+        // → CS ピンは手動で deassert が必要
+        cs_pin.set_high();
+    }
+}</code></pre>
+<h4 id="i2c-プロトコル"><a class="header" href="#i2c-プロトコル">I2C プロトコル</a></h4>
+<p>I2C は START → ADDRESS → DATA → STOP というプロトコルシーケンスがあります。
+途中で drop されると、STOP condition が送信されず、bus が busy のままになることがあります。</p>
+<pre><code class="language-rust">// ⚠️ I2C は途中 drop に弱い
+// → owner task パターンを使い、直接 select に入れない</code></pre>
+<h2 id="安全な設計パターン"><a class="header" href="#安全な設計パターン">安全な設計パターン</a></h2>
+<h3 id="パターン-1-owner-task-に閉じ込める"><a class="header" href="#パターン-1-owner-task-に閉じ込める">パターン 1: owner task に閉じ込める</a></h3>
+<p>cancel-safe 不明のドライバは、<strong>専用 owner task</strong> に閉じ込めて、
+<code>Channel</code> でコマンドを送る構成にします。</p>
+<pre><code class="language-rust">#[embassy_executor::task]
+async fn spi_owner_task(
+    mut spi: Spi&lt;'static, Async&gt;,
+    mut cs: Output&lt;'static&gt;,
+) {
+    loop {
+        match SPI_CMD_CH.receive().await {
+            SpiCommand::Transfer(data) =&gt; {
+                cs.set_low();
+                let result = spi.transfer_in_place(&amp;mut data).await;
+                cs.set_high(); // ← 必ず deassert
+                SPI_STATUS_CH.send(SpiResult::Done(result)).await;
+            }
+            SpiCommand::Cancel =&gt; {
+                cs.set_high(); // 安全状態
+                SPI_STATUS_CH.send(SpiResult::Cancelled).await;
+            }
+        }
+    }
+}
+
+// 呼び出し側は Channel 経由で指示
+// → spi の future を直接 select に入れないので cancel-safe
+match select(SPI_STATUS_CH.receive(), global_cancel.wait()).await {
+    Either::First(result) =&gt; { /* SPI 完了 */ }
+    Either::Second(_) =&gt; {
+        SPI_CMD_CH.send(SpiCommand::Cancel).await;
+        // owner task が安全に CS deassert してくれる
+    }
+}</code></pre>
+<h3 id="パターン-2-cleanup-関数で後処理"><a class="header" href="#パターン-2-cleanup-関数で後処理">パターン 2: cleanup 関数で後処理</a></h3>
+<p>Drop 後に明示的に cleanup を呼ぶ構成です。</p>
+<pre><code class="language-rust">async fn safe_motor_operation() {
+    let result = select(motor_sequence(), CANCEL.wait()).await;
+    // select 後は必ず cleanup
+    motor_pwm_duty_zero().await;
+    motor_brake_engage().await;
+
+    match result {
+        Either::First(()) =&gt; info!("motor sequence complete"),
+        Either::Second(_) =&gt; info!("motor sequence cancelled"),
+    }
+}</code></pre>
+<h3 id="パターン-3-ステップ分割で-cancel-ポイントを作る"><a class="header" href="#パターン-3-ステップ分割で-cancel-ポイントを作る">パターン 3: ステップ分割で cancel ポイントを作る</a></h3>
+<p>長い操作を小さなステップに分割し、各ステップ間で cancel をチェックします。
+これにより、DMA 転送中に drop される事態自体を避けられます。</p>
+<pre><code class="language-rust">async fn multi_step_measurement(cancel: &amp;Signal&lt;CriticalSectionRawMutex, ()&gt;) -&gt; Result&lt;Data, ()&gt; {
+    // ステップ 1: ADC サンプリング（短い、完了を待つ）
+    let adc_val = adc.read(&amp;mut ch).await;
+
+    // cancel チェックポイント
+    if cancel.signaled() { return Err(()); }
+
+    // ステップ 2: SPI でセンサ読み取り（短い、完了を待つ）
+    cs.set_low();
+    spi.transfer_in_place(&amp;mut buf).await.ok();
+    cs.set_high();
+
+    // cancel チェックポイント
+    if cancel.signaled() { return Err(()); }
+
+    // ステップ 3: 結果を処理
+    let data = parse_sensor_data(&amp;buf, adc_val);
+    Ok(data)
+}</code></pre>
+<h2 id="ドライバの-cancel-safe-性を確認する方法"><a class="header" href="#ドライバの-cancel-safe-性を確認する方法">ドライバの cancel-safe 性を確認する方法</a></h2>
+<ol>
+<li>
+<p><strong>ソースコードで <code>Drop</code> impl を確認する</strong></p>
+<ul>
+<li><code>impl Drop for Transfer&lt;'_&gt;</code> 等を探し、DMA 停止処理があるか確認</li>
+</ul>
+</li>
+<li>
+<p><strong>Embassy の GitHub Issues を検索する</strong></p>
+<ul>
+<li><code>cancel-safe</code> や <code>select drop</code> で検索</li>
+</ul>
+</li>
+<li>
+<p><strong>不明なら owner task に閉じ込める</strong></p>
+<ul>
+<li>最も安全な選択肢</li>
+</ul>
+</li>
+<li>
+<p><strong>テストする</strong></p>
+<ul>
+<li><code>select(driver_op(), Timer::after_millis(1))</code> で意図的に途中 drop を発生させ、
+ペリフェラルが正常に再利用できるか確認</li>
+</ul>
+</li>
+</ol>
+<h2 id="チェックリスト"><a class="header" href="#チェックリスト">チェックリスト</a></h2>
+<ul>
+<li><input disabled="" type="checkbox"> <code>select</code> に直接入れるドライバの Drop 実装を確認した</li>
+<li><input disabled="" type="checkbox"> DMA 転送が途中 drop されてもバッファが安全である</li>
+<li><input disabled="" type="checkbox"> CS / チップセレクトが必ず deassert される</li>
+<li><input disabled="" type="checkbox"> I2C の STOP condition が保証される</li>
+<li><input disabled="" type="checkbox"> cancel-safe 不明のドライバは owner task に閉じ込めている</li>
+<li><input disabled="" type="checkbox"> cleanup 関数が peripheral を安全状態に戻している</li>
+</ul>
 
                     </main>
 
                     <nav class="nav-wrapper" aria-label="Page navigation">
                         <!-- Mobile navigation buttons -->
-                            <a rel="prev" href="safety_checklist.html" class="mobile-nav-chapters previous" title="Previous chapter" aria-label="Previous chapter" aria-keyshortcuts="Left">
+                            <a rel="prev" href="cancellation.html" class="mobile-nav-chapters previous" title="Previous chapter" aria-label="Previous chapter" aria-keyshortcuts="Left">
                                 <span class=fa-svg><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 320 512"><!--! Font Awesome Free 6.2.0 by @fontawesome - https://fontawesome.com License - https://fontawesome.com/license/free (Icons: CC BY 4.0, Fonts: SIL OFL 1.1, Code: MIT License) Copyright 2022 Fonticons, Inc. --><path d="M41.4 233.4c-12.5 12.5-12.5 32.8 0 45.3l160 160c12.5 12.5 32.8 12.5 45.3 0s12.5-32.8 0-45.3L109.3 256 246.6 118.6c12.5-12.5 12.5-32.8 0-45.3s-32.8-12.5-45.3 0l-160 160z"/></svg></span>
                             </a>
 
-                            <a rel="next prefetch" href="references.html" class="mobile-nav-chapters next" title="Next chapter" aria-label="Next chapter" aria-keyshortcuts="Right">
+                            <a rel="next prefetch" href="sync_primitives.html" class="mobile-nav-chapters next" title="Next chapter" aria-label="Next chapter" aria-keyshortcuts="Right">
                                 <span class=fa-svg><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 320 512"><!--! Font Awesome Free 6.2.0 by @fontawesome - https://fontawesome.com License - https://fontawesome.com/license/free (Icons: CC BY 4.0, Fonts: SIL OFL 1.1, Code: MIT License) Copyright 2022 Fonticons, Inc. --><path d="M278.6 233.4c12.5 12.5 12.5 32.8 0 45.3l-160 160c-12.5 12.5-32.8 12.5-45.3 0s-12.5-32.8 0-45.3L210.7 256 73.4 118.6c-12.5-12.5-12.5-32.8 0-45.3s32.8-12.5 45.3 0l160 160z"/></svg></span>
                             </a>
 
@@ -242,11 +355,11 @@
             </div>
 
             <nav class="nav-wide-wrapper" aria-label="Page navigation">
-                    <a rel="prev" href="safety_checklist.html" class="nav-chapters previous" title="Previous chapter" aria-label="Previous chapter" aria-keyshortcuts="Left">
+                    <a rel="prev" href="cancellation.html" class="nav-chapters previous" title="Previous chapter" aria-label="Previous chapter" aria-keyshortcuts="Left">
                         <span class=fa-svg><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 320 512"><!--! Font Awesome Free 6.2.0 by @fontawesome - https://fontawesome.com License - https://fontawesome.com/license/free (Icons: CC BY 4.0, Fonts: SIL OFL 1.1, Code: MIT License) Copyright 2022 Fonticons, Inc. --><path d="M41.4 233.4c-12.5 12.5-12.5 32.8 0 45.3l160 160c12.5 12.5 32.8 12.5 45.3 0s12.5-32.8 0-45.3L109.3 256 246.6 118.6c12.5-12.5 12.5-32.8 0-45.3s-32.8-12.5-45.3 0l-160 160z"/></svg></span>
                     </a>
 
-                    <a rel="next prefetch" href="references.html" class="nav-chapters next" title="Next chapter" aria-label="Next chapter" aria-keyshortcuts="Right">
+                    <a rel="next prefetch" href="sync_primitives.html" class="nav-chapters next" title="Next chapter" aria-label="Next chapter" aria-keyshortcuts="Right">
                         <span class=fa-svg><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 320 512"><!--! Font Awesome Free 6.2.0 by @fontawesome - https://fontawesome.com License - https://fontawesome.com/license/free (Icons: CC BY 4.0, Fonts: SIL OFL 1.1, Code: MIT License) Copyright 2022 Fonticons, Inc. --><path d="M278.6 233.4c12.5 12.5 12.5 32.8 0 45.3l-160 160c-12.5 12.5-32.8 12.5-45.3 0s-12.5-32.8 0-45.3L210.7 256 73.4 118.6c-12.5-12.5-12.5-32.8 0-45.3s32.8-12.5 45.3 0l160 160z"/></svg></span>
                     </a>
             </nav>

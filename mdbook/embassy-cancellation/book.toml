@@ -8,6 +8,7 @@ src = "src"
 git-repository-url = "https://github.com/tokoba/embedded-rust"
 edit-url-template = "https://github.com/tokoba/embedded-rust/edit/main/{path}"
 site-url = "http://embedded-rust.com/embassy-cancellation/"
+playground.runnable = false
 
 [output.html.fold]
 enable = true
