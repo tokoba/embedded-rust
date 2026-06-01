@@ -1,0 +1,14 @@
+[book]
+title = "Embassy-rs 実践タスク制御ガイド"
+authors = ["tokoba"]
+language = "ja"
+src = "src"
+
+[output.html]
+git-repository-url = "https://github.com/tokoba/embedded-rust"
+edit-url-template = "https://github.com/tokoba/embedded-rust/edit/main/{path}"
+site-url = "http://embedded-rust.com/embassy-cancellation/"
+
+[output.html.fold]
+enable = true
+level = 1

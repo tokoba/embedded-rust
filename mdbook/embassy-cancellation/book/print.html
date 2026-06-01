@@ -1,0 +1,783 @@
+<!DOCTYPE HTML>
+<html lang="ja" class="light sidebar-visible" dir="ltr">
+    <head>
+        <!-- Book generated using mdBook -->
+        <meta charset="UTF-8">
+        <title>Embassy-rs 実践タスク制御ガイド</title>
+        <meta name="robots" content="noindex">
+
+
+        <!-- Custom HTML head -->
+
+        <meta name="description" content="">
+        <meta name="viewport" content="width=device-width, initial-scale=1">
+        <meta name="theme-color" content="#ffffff">
+
+        <link rel="icon" href="favicon-de23e50b.svg">
+        <link rel="shortcut icon" href="favicon-8114d1fc.png">
+        <link rel="stylesheet" href="css/variables-8adf115d.css">
+        <link rel="stylesheet" href="css/general-0392ca55.css">
+        <link rel="stylesheet" href="css/chrome-fc474251.css">
+        <link rel="stylesheet" href="css/print-9e4910d8.css" media="print">
+
+        <!-- Fonts -->
+        <link rel="stylesheet" href="fonts/fonts-9644e21d.css">
+
+        <!-- Highlight.js Stylesheets -->
+        <link rel="stylesheet" id="mdbook-highlight-css" href="highlight-493f70e1.css">
+        <link rel="stylesheet" id="mdbook-tomorrow-night-css" href="tomorrow-night-4c0ae647.css">
+        <link rel="stylesheet" id="mdbook-ayu-highlight-css" href="ayu-highlight-3fdfc3ac.css">
+
+        <!-- Custom theme stylesheets -->
+
+
+        <!-- Provide site root and default themes to javascript -->
+        <script>
+            const path_to_root = "";
+            const default_light_theme = "light";
+            const default_dark_theme = "navy";
+            window.path_to_searchindex_js = "searchindex-3c1e0eac.js";
+        </script>
+        <!-- Start loading toc.js asap -->
+        <script src="toc-cf0508f1.js"></script>
+    </head>
+    <body>
+    <div id="mdbook-help-container">
+        <div id="mdbook-help-popup">
+            <h2 class="mdbook-help-title">Keyboard shortcuts</h2>
+            <div>
+                <p>Press <kbd>←</kbd> or <kbd>→</kbd> to navigate between chapters</p>
+                <p>Press <kbd>S</kbd> or <kbd>/</kbd> to search in the book</p>
+                <p>Press <kbd>?</kbd> to show this help</p>
+                <p>Press <kbd>Esc</kbd> to hide this help</p>
+            </div>
+        </div>
+    </div>
+    <div id="mdbook-body-container">
+        <!-- Work around some values being stored in localStorage wrapped in quotes -->
+        <script>
+            try {
+                let theme = localStorage.getItem('mdbook-theme');
+                let sidebar = localStorage.getItem('mdbook-sidebar');
+
+                if (theme.startsWith('"') && theme.endsWith('"')) {
+                    localStorage.setItem('mdbook-theme', theme.slice(1, theme.length - 1));
+                }
+
+                if (sidebar.startsWith('"') && sidebar.endsWith('"')) {
+                    localStorage.setItem('mdbook-sidebar', sidebar.slice(1, sidebar.length - 1));
+                }
+            } catch (e) { }
+        </script>
+
+        <!-- Set the theme before any content is loaded, prevents flash -->
+        <script>
+            const default_theme = window.matchMedia("(prefers-color-scheme: dark)").matches ? default_dark_theme : default_light_theme;
+            let theme;
+            try { theme = localStorage.getItem('mdbook-theme'); } catch(e) { }
+            if (theme === null || theme === undefined) { theme = default_theme; }
+            const html = document.documentElement;
+            html.classList.remove('light')
+            html.classList.add(theme);
+            html.classList.add("js");
+        </script>
+
+        <input type="checkbox" id="mdbook-sidebar-toggle-anchor" class="hidden">
+
+        <!-- Hide / unhide sidebar before it is displayed -->
+        <script>
+            let sidebar = null;
+            const sidebar_toggle = document.getElementById("mdbook-sidebar-toggle-anchor");
+            if (document.body.clientWidth >= 1080) {
+                try { sidebar = localStorage.getItem('mdbook-sidebar'); } catch(e) { }
+                sidebar = sidebar || 'visible';
+            } else {
+                sidebar = 'hidden';
+                sidebar_toggle.checked = false;
+            }
+            if (sidebar === 'visible') {
+                sidebar_toggle.checked = true;
+            } else {
+                html.classList.remove('sidebar-visible');
+            }
+        </script>
+
+        <nav id="mdbook-sidebar" class="sidebar" aria-label="Table of contents">
+            <!-- populated by js -->
+            <mdbook-sidebar-scrollbox class="sidebar-scrollbox"></mdbook-sidebar-scrollbox>
+            <noscript>
+                <iframe class="sidebar-iframe-outer" src="toc.html"></iframe>
+            </noscript>
+            <div id="mdbook-sidebar-resize-handle" class="sidebar-resize-handle">
+                <div class="sidebar-resize-indicator"></div>
+            </div>
+        </nav>
+
+        <div id="mdbook-page-wrapper" class="page-wrapper">
+
+            <div class="page">
+                <div id="mdbook-menu-bar-hover-placeholder"></div>
+                <div id="mdbook-menu-bar" class="menu-bar sticky">
+                    <div class="left-buttons">
+                        <label id="mdbook-sidebar-toggle" class="icon-button" for="mdbook-sidebar-toggle-anchor" title="Toggle Table of Contents" aria-label="Toggle Table of Contents" aria-controls="mdbook-sidebar">
+                            <span class=fa-svg><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 448 512"><!--! Font Awesome Free 6.2.0 by @fontawesome - https://fontawesome.com License - https://fontawesome.com/license/free (Icons: CC BY 4.0, Fonts: SIL OFL 1.1, Code: MIT License) Copyright 2022 Fonticons, Inc. --><path d="M0 96C0 78.3 14.3 64 32 64H416c17.7 0 32 14.3 32 32s-14.3 32-32 32H32C14.3 128 0 113.7 0 96zM0 256c0-17.7 14.3-32 32-32H416c17.7 0 32 14.3 32 32s-14.3 32-32 32H32c-17.7 0-32-14.3-32-32zM448 416c0 17.7-14.3 32-32 32H32c-17.7 0-32-14.3-32-32s14.3-32 32-32H416c17.7 0 32 14.3 32 32z"/></svg></span>
+                        </label>
+                        <button id="mdbook-theme-toggle" class="icon-button" type="button" title="Change theme" aria-label="Change theme" aria-haspopup="true" aria-expanded="false" aria-controls="mdbook-theme-list">
+                            <span class=fa-svg><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 576 512"><!--! Font Awesome Free 6.2.0 by @fontawesome - https://fontawesome.com License - https://fontawesome.com/license/free (Icons: CC BY 4.0, Fonts: SIL OFL 1.1, Code: MIT License) Copyright 2022 Fonticons, Inc. --><path d="M371.3 367.1c27.3-3.9 51.9-19.4 67.2-42.9L600.2 74.1c12.6-19.5 9.4-45.3-7.6-61.2S549.7-4.4 531.1 9.6L294.4 187.2c-24 18-38.2 46.1-38.4 76.1L371.3 367.1zm-19.6 25.4l-116-104.4C175.9 290.3 128 339.6 128 400c0 3.9 .2 7.8 .6 11.6c1.8 17.5-10.2 36.4-27.8 36.4H96c-17.7 0-32 14.3-32 32s14.3 32 32 32H240c61.9 0 112-50.1 112-112c0-2.5-.1-5-.2-7.5z"/></svg></span>
+                        </button>
+                        <ul id="mdbook-theme-list" class="theme-popup" aria-label="Themes" role="menu">
+                            <li role="none"><button role="menuitem" class="theme" id="mdbook-theme-default_theme">Auto</button></li>
+                            <li role="none"><button role="menuitem" class="theme" id="mdbook-theme-light">Light</button></li>
+                            <li role="none"><button role="menuitem" class="theme" id="mdbook-theme-rust">Rust</button></li>
+                            <li role="none"><button role="menuitem" class="theme" id="mdbook-theme-coal">Coal</button></li>
+                            <li role="none"><button role="menuitem" class="theme" id="mdbook-theme-navy">Navy</button></li>
+                            <li role="none"><button role="menuitem" class="theme" id="mdbook-theme-ayu">Ayu</button></li>
+                        </ul>
+                        <button id="mdbook-search-toggle" class="icon-button" type="button" title="Search (`/`)" aria-label="Toggle Searchbar" aria-expanded="false" aria-keyshortcuts="/ s" aria-controls="mdbook-searchbar">
+                            <span class=fa-svg><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 512 512"><!--! Font Awesome Free 6.2.0 by @fontawesome - https://fontawesome.com License - https://fontawesome.com/license/free (Icons: CC BY 4.0, Fonts: SIL OFL 1.1, Code: MIT License) Copyright 2022 Fonticons, Inc. --><path d="M416 208c0 45.9-14.9 88.3-40 122.7L502.6 457.4c12.5 12.5 12.5 32.8 0 45.3s-32.8 12.5-45.3 0L330.7 376c-34.4 25.2-76.8 40-122.7 40C93.1 416 0 322.9 0 208S93.1 0 208 0S416 93.1 416 208zM208 352c79.5 0 144-64.5 144-144s-64.5-144-144-144S64 128.5 64 208s64.5 144 144 144z"/></svg></span>
+                        </button>
+                    </div>
+
+                    <h1 class="menu-title">Embassy-rs 実践タスク制御ガイド</h1>
+
+                    <div class="right-buttons">
+                        <a href="print.html" title="Print this book" aria-label="Print this book">
+                            <span class=fa-svg id="print-button"><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 512 512"><!--! Font Awesome Free 6.2.0 by @fontawesome - https://fontawesome.com License - https://fontawesome.com/license/free (Icons: CC BY 4.0, Fonts: SIL OFL 1.1, Code: MIT License) Copyright 2022 Fonticons, Inc. --><path d="M128 0C92.7 0 64 28.7 64 64v96h64V64H354.7L384 93.3V160h64V93.3c0-17-6.7-33.3-18.7-45.3L400 18.7C388 6.7 371.7 0 354.7 0H128zM384 352v32 64H128V384 368 352H384zm64 32h32c17.7 0 32-14.3 32-32V256c0-35.3-28.7-64-64-64H64c-35.3 0-64 28.7-64 64v96c0 17.7 14.3 32 32 32H64v64c0 35.3 28.7 64 64 64H384c35.3 0 64-28.7 64-64V384zm-16-88c-13.3 0-24-10.7-24-24s10.7-24 24-24s24 10.7 24 24s-10.7 24-24 24z"/></svg></span>
+                        </a>
+                        <a href="https://github.com/your-org/embassy-task-control-guide" title="Git repository" aria-label="Git repository">
+                            <span class=fa-svg><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 496 512"><!--! Font Awesome Free 6.2.0 by @fontawesome - https://fontawesome.com License - https://fontawesome.com/license/free (Icons: CC BY 4.0, Fonts: SIL OFL 1.1, Code: MIT License) Copyright 2022 Fonticons, Inc. --><path d="M165.9 397.4c0 2-2.3 3.6-5.2 3.6-3.3.3-5.6-1.3-5.6-3.6 0-2 2.3-3.6 5.2-3.6 3-.3 5.6 1.3 5.6 3.6zm-31.1-4.5c-.7 2 1.3 4.3 4.3 4.9 2.6 1 5.6 0 6.2-2s-1.3-4.3-4.3-5.2c-2.6-.7-5.5.3-6.2 2.3zm44.2-1.7c-2.9.7-4.9 2.6-4.6 4.9.3 2 2.9 3.3 5.9 2.6 2.9-.7 4.9-2.6 4.6-4.6-.3-1.9-3-3.2-5.9-2.9zM244.8 8C106.1 8 0 113.3 0 252c0 110.9 69.8 205.8 169.5 239.2 12.8 2.3 17.3-5.6 17.3-12.1 0-6.2-.3-40.4-.3-61.4 0 0-70 15-84.7-29.8 0 0-11.4-29.1-27.8-36.6 0 0-22.9-15.7 1.6-15.4 0 0 24.9 2 38.6 25.8 21.9 38.6 58.6 27.5 72.9 20.9 2.3-16 8.8-27.1 16-33.7-55.9-6.2-112.3-14.3-112.3-110.5 0-27.5 7.6-41.3 23.6-58.9-2.6-6.5-11.1-33.3 2.6-67.9 20.9-6.5 69 27 69 27 20-5.6 41.5-8.5 62.8-8.5s42.8 2.9 62.8 8.5c0 0 48.1-33.6 69-27 13.7 34.7 5.2 61.4 2.6 67.9 16 17.7 25.8 31.5 25.8 58.9 0 96.5-58.9 104.2-114.8 110.5 9.2 7.9 17 22.9 17 46.4 0 33.7-.3 75.4-.3 83.6 0 6.5 4.6 14.4 17.3 12.1C428.2 457.8 496 362.9 496 252 496 113.3 383.5 8 244.8 8zM97.2 352.9c-1.3 1-1 3.3.7 5.2 1.6 1.6 3.9 2.3 5.2 1 1.3-1 1-3.3-.7-5.2-1.6-1.6-3.9-2.3-5.2-1zm-10.8-8.1c-.7 1.3.3 2.9 2.3 3.9 1.6 1 3.6.7 4.3-.7.7-1.3-.3-2.9-2.3-3.9-2-.6-3.6-.3-4.3.7zm32.4 35.6c-1.6 1.3-1 4.3 1.3 6.2 2.3 2.3 5.2 2.6 6.5 1 1.3-1.3.7-4.3-1.3-6.2-2.2-2.3-5.2-2.6-6.5-1zm-11.4-14.7c-1.6 1-1.6 3.6 0 5.9 1.6 2.3 4.3 3.3 5.6 2.3 1.6-1.3 1.6-3.9 0-6.2-1.4-2.3-4-3.3-5.6-2z"/></svg></span>
+                        </a>
+
+                    </div>
+                </div>
+
+                <div id="mdbook-search-wrapper" class="hidden">
+                    <form id="mdbook-searchbar-outer" class="searchbar-outer">
+                        <div class="search-wrapper">
+                            <input type="search" id="mdbook-searchbar" name="searchbar" placeholder="Search this book ..." aria-controls="mdbook-searchresults-outer" aria-describedby="searchresults-header">
+                            <div class="spinner-wrapper">
+                                <span class=fa-svg id="fa-spin"><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 512 512"><!--! Font Awesome Free 6.2.0 by @fontawesome - https://fontawesome.com License - https://fontawesome.com/license/free (Icons: CC BY 4.0, Fonts: SIL OFL 1.1, Code: MIT License) Copyright 2022 Fonticons, Inc. --><path d="M304 48c0-26.5-21.5-48-48-48s-48 21.5-48 48s21.5 48 48 48s48-21.5 48-48zm0 416c0-26.5-21.5-48-48-48s-48 21.5-48 48s21.5 48 48 48s48-21.5 48-48zM48 304c26.5 0 48-21.5 48-48s-21.5-48-48-48s-48 21.5-48 48s21.5 48 48 48zm464-48c0-26.5-21.5-48-48-48s-48 21.5-48 48s21.5 48 48 48s48-21.5 48-48zM142.9 437c18.7-18.7 18.7-49.1 0-67.9s-49.1-18.7-67.9 0s-18.7 49.1 0 67.9s49.1 18.7 67.9 0zm0-294.2c18.7-18.7 18.7-49.1 0-67.9S93.7 56.2 75 75s-18.7 49.1 0 67.9s49.1 18.7 67.9 0zM369.1 437c18.7 18.7 49.1 18.7 67.9 0s18.7-49.1 0-67.9s-49.1-18.7-67.9 0s-18.7 49.1 0 67.9z"/></svg></span>
+                            </div>
+                        </div>
+                    </form>
+                    <div id="mdbook-searchresults-outer" class="searchresults-outer hidden">
+                        <div id="mdbook-searchresults-header" class="searchresults-header"></div>
+                        <ul id="mdbook-searchresults">
+                        </ul>
+                    </div>
+                </div>
+
+                <!-- Apply ARIA attributes after the sidebar and the sidebar toggle button are added to the DOM -->
+                <script>
+                    document.getElementById('mdbook-sidebar-toggle').setAttribute('aria-expanded', sidebar === 'visible');
+                    document.getElementById('mdbook-sidebar').setAttribute('aria-hidden', sidebar !== 'visible');
+                    Array.from(document.querySelectorAll('#mdbook-sidebar a')).forEach(function(link) {
+                        link.setAttribute('tabIndex', sidebar === 'visible' ? 0 : -1);
+                    });
+                </script>
+
+                <div id="mdbook-content" class="content">
+                    <main>
+                        <h1 id="はじめに"><a class="header" href="#はじめに">はじめに</a></h1>
+<p>このガイドは、Embassy-rs を使って複雑な組み込みタスク制御を設計するための実践資料です。
+元資料の主題である <strong>Thread-mode Executor / Interrupt-mode Executor / CancellationToken 相当の設計</strong>を、Web 公開しやすい章立てに再構成しました。</p>
+<p>対象読者は、C / NORTi / FreeRTOS などでタスク設計を経験しており、Rust + Embassy の async/await モデルを実機制御に導入したい開発者です。</p>
+<h2 id="この資料で扱うこと"><a class="header" href="#この資料で扱うこと">この資料で扱うこと</a></h2>
+<ul>
+<li>Embassy executor の基本モデル</li>
+<li><code>main -&gt; spawn -&gt; tasks</code> の thread-mode 設計</li>
+<li><code>InterruptExecutor</code> による優先度分離</li>
+<li><code>Signal</code> / <code>Channel</code> / <code>Watch</code> / <code>select</code> を使う協調キャンセル</li>
+<li>STM32F767ZI / NUCLEO-F767ZI 向けの実装例</li>
+<li>FreeRTOS / NORTi 的な設計から Embassy へ移すときの変換観点</li>
+</ul>
+<h2 id="重要な前提"><a class="header" href="#重要な前提">重要な前提</a></h2>
+<p>Embassy では、Tokio や C# のような専用 <code>CancellationToken</code> 型を中心にするより、次のような組み合わせで設計します。</p>
+<pre><code class="language-text">CancellationToken
+  ≒ Watch&lt;SystemState&gt; / Signal&lt;Cancel&gt; / Channel&lt;Command&gt;
+
+cancelled().await
+  ≒ select(work_future, cancel_future).await
+
+TaskTracker.wait()
+  ≒ ACK Channel + Supervisor state machine
+</code></pre>
+<p>つまり、<strong>spawn 済み task を外から kill する設計ではなく、長寿命 task が上位 command / state を受け取り、<code>.await</code> 境界で協調的に停止する設計</strong>が基本です。</p>
+<div style="break-before: page; page-break-before: always;"></div>
+<h1 id="設計全体像"><a class="header" href="#設計全体像">設計全体像</a></h1>
+<p>Embassy による複雑なタスク制御は、次の 4 つに分解すると理解しやすくなります。</p>
+<div class="table-wrapper">
+<table>
+<thead>
+<tr><th>層</th><th>役割</th><th>Embassy での主な要素</th></tr>
+</thead>
+<tbody>
+<tr><td>Executor 層</td><td>task を poll し、sleep / wake を管理する</td><td><code>Executor</code>, <code>InterruptExecutor</code></td></tr>
+<tr><td>Task 層</td><td>通信・制御・監視などの責務単位</td><td><code>#[embassy_executor::task]</code></td></tr>
+<tr><td>同期層</td><td>task 間・ISR→task の接続</td><td><code>Signal</code>, <code>Channel</code>, <code>Watch</code>, <code>Mutex</code></td></tr>
+<tr><td>制御層</td><td>状態遷移・停止・異常処理</td><td><code>enum State</code>, <code>enum Command</code>, supervisor task</td></tr>
+</tbody>
+</table>
+</div>
+<h2 id="推奨構成"><a class="header" href="#推奨構成">推奨構成</a></h2>
+<pre><code class="language-text">main
+ ├─ board 初期化
+ ├─ channel / signal / watch 初期化
+ ├─ supervisor_task spawn
+ ├─ device/service worker spawn
+ └─ watchdog / heartbeat loop
+
+supervisor_task
+ ├─ 外部 command を受信
+ ├─ SystemState を Watch で配信
+ ├─ worker へ個別 Command を送信
+ └─ ACK / Status を待つ
+
+worker_task
+ ├─ Command を待つ
+ ├─ work future と cancel future を select
+ ├─ cleanup
+ └─ Status を返す
+</code></pre>
+<h2 id="設計原則"><a class="header" href="#設計原則">設計原則</a></h2>
+<ol>
+<li>
+<p><strong>イベントごとに task を spawn しない</strong><br>Embassy task は静的割り当てです。イベント burst に対して <code>pool_size</code> を増やすより、常駐 worker + command loop に寄せます。</p>
+</li>
+<li>
+<p><strong>キャンセル要求と停止完了を分ける</strong><br><code>Cancel</code> を送るだけでは安全停止完了を意味しません。<code>Status::Stopped</code> や <code>Status::Cancelled</code> を返す ACK 経路を作ります。</p>
+</li>
+<li>
+<p><strong>長い処理には await 点を作る</strong><br>Embassy は協調型です。<code>.await</code> しない長いループは他 task の進行もキャンセル反応も止めます。</p>
+</li>
+<li>
+<p><strong>ISR では通知だけにする</strong><br>ISR では <code>try_send</code>, <code>signal</code>, atomic flag などに留め、実処理は task 側へ逃がします。</p>
+</li>
+<li>
+<p><strong>InterruptExecutor は少数の高優先度 task に限定する</strong><br>便利ですが複雑です。通常は thread-mode executor を基本にします。</p>
+</li>
+</ol>
+<div style="break-before: page; page-break-before: always;"></div>
+<h1 id="thread-mode-executor"><a class="header" href="#thread-mode-executor">Thread-mode Executor</a></h1>
+<p>Thread-mode Executor は、Embassy の最も基本的な実行モデルです。
+<code>#[embassy_executor::main]</code> で起動し、<code>Spawner</code> で task を spawn します。</p>
+<h2 id="基本コード"><a class="header" href="#基本コード">基本コード</a></h2>
+<pre class="playground"><code class="language-rust">#![no_std]
+#![no_main]
+
+use defmt::*;
+use embassy_executor::Spawner;
+use embassy_time::{Duration, Timer};
+use panic_probe as _;
+
+#[embassy_executor::task]
+async fn sensor_task() {
+    loop {
+        info!("sensor tick");
+        Timer::after(Duration::from_millis(500)).await;
+    }
+}
+
+#[embassy_executor::task]
+async fn led_task() {
+    loop {
+        info!("led tick");
+        Timer::after(Duration::from_secs(1)).await;
+    }
+}
+
+#[embassy_executor::main]
+async fn main(spawner: Spawner) {
+    let _p = embassy_stm32::init(Default::default());
+
+    spawner.spawn(sensor_task()).unwrap();
+    spawner.spawn(led_task()).unwrap();
+
+    loop {
+        Timer::after(Duration::from_secs(10)).await;
+        info!("main heartbeat");
+    }
+}</code></pre>
+<h2 id="thread-mode-が向く処理"><a class="header" href="#thread-mode-が向く処理">Thread-mode が向く処理</a></h2>
+<ul>
+<li>通信上位層</li>
+<li>センサ周期処理</li>
+<li>UI / LED / ボタン処理</li>
+<li>ロギング</li>
+<li>状態監視</li>
+<li>command dispatcher</li>
+</ul>
+<h2 id="注意点"><a class="header" href="#注意点">注意点</a></h2>
+<h3 id="await-なしの長時間処理を避ける"><a class="header" href="#await-なしの長時間処理を避ける"><code>.await</code> なしの長時間処理を避ける</a></h3>
+<pre class="playground"><code class="language-rust"><span class="boring">#![allow(unused)]
+</span><span class="boring">fn main() {
+</span>// 悪い例: 他 task を止める
+loop {
+    heavy_calculation();
+}
+<span class="boring">}</span></code></pre>
+<p>分割可能なら、チャンクごとに <code>Timer::after_micros(0).await</code> や <code>yield_now</code> 相当の待機点を挿入します。</p>
+<h3 id="main-にロジックを集めない"><a class="header" href="#main-にロジックを集めない">main にロジックを集めない</a></h3>
+<p><code>main</code> は board 初期化と task 起動に寄せ、制御の本体は supervisor / worker に分けます。</p>
+<div style="break-before: page; page-break-before: always;"></div>
+<h1 id="interrupt-mode-executor"><a class="header" href="#interrupt-mode-executor">Interrupt-mode Executor</a></h1>
+<p><code>InterruptExecutor</code> は、task を割り込みコンテキストで poll するための executor です。
+これにより thread-mode executor より高い優先度で async task を動かせます。</p>
+<h2 id="誤解しやすい点"><a class="header" href="#誤解しやすい点">誤解しやすい点</a></h2>
+<p><code>irq -&gt; task called</code> と考えると少し危険です。
+実際には、通常の peripheral IRQ が task 本体を直接呼ぶわけではありません。</p>
+<pre><code class="language-text">task が async I/O を開始
+  -&gt; peripheral IRQ 発生
+  -&gt; HAL が waker を起こす
+  -&gt; executor が ready task を poll
+</code></pre>
+<p>一方、<code>InterruptExecutor</code> は <strong>executor 自体を専用 IRQ / SWI で駆動する</strong>構造です。
+EXTI / USART / DMA などの本物の peripheral IRQ を executor IRQ と兼用する設計は、原則として避けます。</p>
+<h2 id="使うべき場面"><a class="header" href="#使うべき場面">使うべき場面</a></h2>
+<ul>
+<li>低優先度 task を確実に中断したい</li>
+<li>数十 µs〜サブ ms レベルの応答性が必要</li>
+<li>高優先度 async pipeline を通常系から分離したい</li>
+</ul>
+<h2 id="避けるべき場面"><a class="header" href="#避けるべき場面">避けるべき場面</a></h2>
+<ul>
+<li>単なるボタン入力</li>
+<li>UART 受信イベントの通常処理</li>
+<li>長い計算処理</li>
+<li>ログ出力</li>
+<li>複雑な共有状態を多数触る処理</li>
+</ul>
+<h2 id="設計上の注意"><a class="header" href="#設計上の注意">設計上の注意</a></h2>
+<ul>
+<li><code>InterruptExecutor::start()</code> 前に IRQ 優先度を設定する</li>
+<li>high-priority task は短くする</li>
+<li>共有データは <code>CriticalSectionRawMutex</code> や atomic を慎重に使う</li>
+<li>thread-mode で十分なら thread-mode を選ぶ</li>
+</ul>
+<h2 id="stm32-での扱い"><a class="header" href="#stm32-での扱い">STM32 での扱い</a></h2>
+<p>STM32 では未使用 IRQ / software interrupt 相当の選択が board / HAL の対応状況に依存します。
+このガイドの実装例では、まず thread-mode executor だけで安全な supervisor + worker 構成を示します。
+InterruptExecutor は、実測で thread-mode のレイテンシが不足したときに追加する選択肢とします。</p>
+<div style="break-before: page; page-break-before: always;"></div>
+<h1 id="キャンセル設計"><a class="header" href="#キャンセル設計">キャンセル設計</a></h1>
+<p>Embassy でのキャンセルは、基本的に <strong>協調的キャンセル</strong>です。
+外から task を強制 kill する API に依存するのではなく、task 自身が停止要求を受け取り、安全な境界で抜けます。</p>
+<h2 id="基本形-selectwork-cancel"><a class="header" href="#基本形-selectwork-cancel">基本形: <code>select(work, cancel)</code></a></h2>
+<pre class="playground"><code class="language-rust"><span class="boring">#![allow(unused)]
+</span><span class="boring">fn main() {
+</span>use embassy_futures::select::{select, Either};
+
+match select(work_future(), cancel_future()).await {
+    Either::First(result) =&gt; {
+        // 通常完了
+    }
+    Either::Second(_) =&gt; {
+        // キャンセル要求
+        cleanup().await;
+    }
+}
+<span class="boring">}</span></code></pre>
+<h2 id="signal-による個別キャンセル"><a class="header" href="#signal-による個別キャンセル">Signal による個別キャンセル</a></h2>
+<pre class="playground"><code class="language-rust"><span class="boring">#![allow(unused)]
+</span><span class="boring">fn main() {
+</span>use embassy_sync::blocking_mutex::raw::CriticalSectionRawMutex;
+use embassy_sync::signal::Signal;
+
+static CANCEL: Signal&lt;CriticalSectionRawMutex, ()&gt; = Signal::new();
+<span class="boring">}</span></code></pre>
+<ul>
+<li>単一 worker の停止に向く</li>
+<li>最新の停止要求だけ見ればよい場合に向く</li>
+<li>複数 task への broadcast には向かない</li>
+</ul>
+<h2 id="channel-による-command-loop"><a class="header" href="#channel-による-command-loop">Channel による command loop</a></h2>
+<pre class="playground"><code class="language-rust"><span class="boring">#![allow(unused)]
+</span><span class="boring">fn main() {
+</span>#[derive(Clone, Copy, Debug, PartialEq, Eq)]
+pub enum Command {
+    Start,
+    Cancel,
+    Stop,
+    ResetFault,
+}
+<span class="boring">}</span></code></pre>
+<p><code>Start</code>, <code>Cancel</code>, <code>Stop</code>, <code>Reconfigure</code> などが混在するなら、<code>Channel&lt;Command, N&gt;</code> が扱いやすくなります。</p>
+<h2 id="watch-による-global-state-配信"><a class="header" href="#watch-による-global-state-配信">Watch による global state 配信</a></h2>
+<pre class="playground"><code class="language-rust"><span class="boring">#![allow(unused)]
+</span><span class="boring">fn main() {
+</span>#[derive(Clone, Copy, Debug, PartialEq, Eq)]
+pub enum SystemState {
+    Boot,
+    Running,
+    StopRequested,
+    Fault,
+}
+<span class="boring">}</span></code></pre>
+<p>複数 task に一斉に停止やモード変更を伝える場合は、<code>Watch&lt;SystemState&gt;</code> が適しています。</p>
+<h2 id="ack-を必ず返す"><a class="header" href="#ack-を必ず返す">ACK を必ず返す</a></h2>
+<p>停止要求は「止めろ」という要求であり、「止まった」という事実ではありません。
+機械制御・通信停止・DMA 停止では、worker から supervisor へ ACK を返します。</p>
+<pre class="playground"><code class="language-rust"><span class="boring">#![allow(unused)]
+</span><span class="boring">fn main() {
+</span>#[derive(Clone, Copy, Debug, PartialEq, Eq)]
+pub enum Status {
+    Started,
+    Completed,
+    Cancelled,
+    Stopped,
+    Fault,
+}
+<span class="boring">}</span></code></pre>
+<h2 id="キャンセル安全性"><a class="header" href="#キャンセル安全性">キャンセル安全性</a></h2>
+<p><code>select</code> で負けた future は drop されます。
+その future が DMA / peripheral / protocol state を持っている場合、drop 時に安全に停止できるかを必ず確認します。</p>
+<p>安全性が不明な driver は、直接 <code>select</code> の work future に入れず、専用 owner task に閉じ込めて <code>Channel</code> で指示する構成にします。</p>
+<div style="break-before: page; page-break-before: always;"></div>
+<h1 id="同期プリミティブ選定"><a class="header" href="#同期プリミティブ選定">同期プリミティブ選定</a></h1>
+<div class="table-wrapper">
+<table>
+<thead>
+<tr><th>プリミティブ</th><th>主用途</th><th>向くケース</th><th>注意点</th></tr>
+</thead>
+<tbody>
+<tr><td><code>Signal&lt;M, T&gt;</code></td><td>単一 consumer への最新値通知</td><td>個別 cancel、単発 wake</td><td>複数 task broadcast には不向き</td></tr>
+<tr><td><code>Channel&lt;M, T, N&gt;</code></td><td>bounded queue</td><td>command、event、ACK</td><td>overflow 方針が必要</td></tr>
+<tr><td><code>Watch&lt;M, T, N&gt;</code></td><td>最新状態の配信</td><td>global state、shutdown</td><td>全イベント履歴は残らない</td></tr>
+<tr><td><code>PubSubChannel</code></td><td>1 対多 event 配信</td><td>複数 task への event broadcast</td><td>subscriber 数と capacity 設計が必要</td></tr>
+<tr><td><code>Mutex&lt;M, T&gt;</code></td><td>共有資源保護</td><td>I2C/SPI bus 共有、設定値共有</td><td>cancel 通知には過剰な場合あり</td></tr>
+<tr><td><code>AtomicBool</code></td><td>最軽量 flag</td><td>ISR からの emergency flag</td><td><code>.await</code> 中は反応できない</td></tr>
+</tbody>
+</table>
+</div>
+<h2 id="選定フロー"><a class="header" href="#選定フロー">選定フロー</a></h2>
+<pre><code class="language-text">停止要求を 1 task に送りたい？
+  -&gt; Signal
+
+命令を順序付きで処理したい？
+  -&gt; Channel&lt;Command&gt;
+
+複数 task に現在状態を共有したい？
+  -&gt; Watch&lt;State&gt;
+
+複数 task にイベントを配信したい？
+  -&gt; PubSubChannel&lt;Event&gt;
+
+共有 peripheral を守りたい？
+  -&gt; Mutex / owner task
+</code></pre>
+<h2 id="isr-から送る場合"><a class="header" href="#isr-から送る場合">ISR から送る場合</a></h2>
+<p>ISR からは <code>await</code> できません。</p>
+<ul>
+<li><code>try_send</code></li>
+<li><code>signal</code></li>
+<li>atomic flag set</li>
+</ul>
+<p>など、即時に戻る操作だけにします。
+満杯時の方針は設計で明示します。</p>
+<div class="table-wrapper">
+<table>
+<thead>
+<tr><th>方針</th><th>例</th></tr>
+</thead>
+<tbody>
+<tr><td>drop</td><td>高頻度イベントで最新処理だけ必要</td></tr>
+<tr><td>overwrite</td><td>最新値だけ意味がある</td></tr>
+<tr><td>error count</td><td>取りこぼしを診断したい</td></tr>
+<tr><td>emergency fault</td><td>取りこぼしが安全上許されない</td></tr>
+</tbody>
+</table>
+</div>
+<div style="break-before: page; page-break-before: always;"></div>
+<h1 id="実践パターン"><a class="header" href="#実践パターン">実践パターン</a></h1>
+<h2 id="パターン-a-supervisor--workers--state-watch"><a class="header" href="#パターン-a-supervisor--workers--state-watch">パターン A: supervisor + workers + state watch</a></h2>
+<p>最も汎用的な構成です。</p>
+<pre><code class="language-text">supervisor_task
+ ├─ command を受信
+ ├─ SystemState を更新
+ ├─ worker へ Command を送る
+ └─ Status / ACK を待つ
+
+worker_task
+ ├─ Command::Start を待つ
+ ├─ work と cancel を select
+ ├─ cleanup
+ └─ Status を返す
+</code></pre>
+<p>向く用途:</p>
+<ul>
+<li>モード遷移が複雑</li>
+<li>フェールセーフが必要</li>
+<li>複数 peripheral を協調制御する</li>
+</ul>
+<h2 id="パターン-b-device-owner-task"><a class="header" href="#パターン-b-device-owner-task">パターン B: device owner task</a></h2>
+<p>共有 peripheral を複数 task から直接触らず、owner task へ閉じ込めます。</p>
+<pre><code class="language-text">application task
+  -&gt; Channel&lt;DeviceCommand&gt;
+      -&gt; device_owner_task
+          -&gt; peripheral 操作
+          -&gt; Channel&lt;DeviceStatus&gt;
+</code></pre>
+<p>向く用途:</p>
+<ul>
+<li>UART / SPI / I2C / CAN / USB</li>
+<li>トランザクション順序を保証したい処理</li>
+<li>キャンセル安全性が不明な driver</li>
+</ul>
+<h2 id="パターン-c-per-operation-cancel"><a class="header" href="#パターン-c-per-operation-cancel">パターン C: per-operation cancel</a></h2>
+<p>長い単発処理を止めたい場合の最小構成です。</p>
+<pre class="playground"><code class="language-rust"><span class="boring">#![allow(unused)]
+</span><span class="boring">fn main() {
+</span>match select(long_operation(), CANCEL.wait()).await {
+    Either::First(_) =&gt; {}
+    Either::Second(_) =&gt; cleanup().await,
+}
+<span class="boring">}</span></code></pre>
+<p>向く用途:</p>
+<ul>
+<li>homing</li>
+<li>calibration</li>
+<li>firmware update</li>
+<li>長時間 measurement sequence</li>
+</ul>
+<h2 id="パターン-d-timer-task-を-spawn-しない"><a class="header" href="#パターン-d-timer-task-を-spawn-しない">パターン D: timer task を spawn しない</a></h2>
+<p><code>Timer::after</code> のためだけに task を都度 spawn しないでください。
+既存 worker 内で timer future と cancel future を <code>select</code> します。</p>
+<pre class="playground"><code class="language-rust"><span class="boring">#![allow(unused)]
+</span><span class="boring">fn main() {
+</span>match select(Timer::after_secs(10), cancel.wait()).await {
+    Either::First(_) =&gt; timeout_handler().await,
+    Either::Second(_) =&gt; cancel_handler().await,
+}
+<span class="boring">}</span></code></pre>
+<h2 id="パターン-e-bool-ではなく-enum-state"><a class="header" href="#パターン-e-bool-ではなく-enum-state">パターン E: bool ではなく enum state</a></h2>
+<p>複雑な制御では、flag の組み合わせより enum state machine が安全です。</p>
+<pre class="playground"><code class="language-rust"><span class="boring">#![allow(unused)]
+</span><span class="boring">fn main() {
+</span>#[derive(Clone, Copy, Debug, PartialEq, Eq)]
+enum State {
+    Idle,
+    Running,
+    Cancelling,
+    Fault,
+}
+<span class="boring">}</span></code></pre>
+<div style="break-before: page; page-break-before: always;"></div>
+<h1 id="stm32f767zinucleo-f767zi-実装例"><a class="header" href="#stm32f767zinucleo-f767zi-実装例">STM32F767ZI/Nucleo-F767ZI 実装例</a></h1>
+<p>この章では、NUCLEO-F767ZI を想定した Embassy サンプルを示します。</p>
+<ul>
+<li>LD1: PB0 を LED として使用</li>
+<li>B1: PC13 をユーザーボタンとして使用</li>
+<li>Button falling edge で worker に <code>Start</code> を送信</li>
+<li>2 秒後に supervisor が <code>Cancel</code> を送信</li>
+<li>worker は <code>select(work, cancel)</code> で協調キャンセル</li>
+<li>LED 点滅で状態を可視化</li>
+</ul>
+<blockquote>
+<p>ボードリビジョンや BSP 設定により LED / Button のピンが異なる場合があります。その場合は <code>src/main.rs</code> の <code>PB0</code>, <code>PC13</code>, <code>EXTI13</code> を実機配線に合わせて変更してください。</p>
+</blockquote>
+<h2 id="ディレクトリ構成"><a class="header" href="#ディレクトリ構成">ディレクトリ構成</a></h2>
+<pre><code class="language-text">examples/nucleo-f767zi/
+├── Cargo.toml
+├── memory.x
+├── .cargo/config.toml
+└── src/main.rs
+</code></pre>
+<h2 id="ビルド例"><a class="header" href="#ビルド例">ビルド例</a></h2>
+<pre><code class="language-bash">cd examples/nucleo-f767zi
+cargo build --release
+</code></pre>
+<h2 id="書き込み例"><a class="header" href="#書き込み例">書き込み例</a></h2>
+<pre><code class="language-bash">probe-rs run --chip STM32F767ZITx target/thumbv7em-none-eabihf/release/nucleo-f767zi
+</code></pre>
+<h2 id="実装のポイント"><a class="header" href="#実装のポイント">実装のポイント</a></h2>
+<ul>
+<li>command は <code>Channel&lt;CriticalSectionRawMutex, Command, 4&gt;</code> で送る</li>
+<li>cancel は command の一種として扱う</li>
+<li>status は <code>Channel&lt;CriticalSectionRawMutex, Status, 4&gt;</code> で supervisor に返す</li>
+<li>button task は EXTI を使い、ISR で重い処理をしない</li>
+<li>worker の長い処理は 100 ms step に分割し、cancel を受けられるようにする</li>
+</ul>
+<p>完全なコードは zip 内の <code>examples/nucleo-f767zi/src/main.rs</code> を参照してください。</p>
+<div style="break-before: page; page-break-before: always;"></div>
+<h1 id="freertosnorti-からの移行観点"><a class="header" href="#freertosnorti-からの移行観点">FreeRTOS/NORTi からの移行観点</a></h1>
+<p>Embassy は RTOS ではありませんが、RTOS 的な設計経験は非常に有効です。
+ただし、対応関係を誤ると task 数が増えすぎたり、キャンセル設計が不明瞭になります。</p>
+<div class="table-wrapper">
+<table>
+<thead>
+<tr><th>RTOS / NORTi 的概念</th><th>Embassy での対応</th><th>設計上の注意</th></tr>
+</thead>
+<tbody>
+<tr><td>task</td><td><code>#[embassy_executor::task]</code></td><td>task は静的割り当て。都度生成ではなく常駐化</td></tr>
+<tr><td>mailbox</td><td><code>Channel</code></td><td>bounded capacity と overflow 方針を決める</td></tr>
+<tr><td>event flag</td><td><code>Signal</code> / <code>Watch</code> / <code>PubSubChannel</code></td><td>1対1か1対多かで選ぶ</td></tr>
+<tr><td>cyclic handler</td><td><code>Timer::after</code> loop</td><td>handler ではなく async task の周期 loop にする</td></tr>
+<tr><td>alarm</td><td><code>Timer::after</code> / <code>with_timeout</code></td><td>cancel と <code>select</code> しやすい</td></tr>
+<tr><td>mutex</td><td><code>Mutex</code> / owner task</td><td>peripheral は owner task 化が安全</td></tr>
+<tr><td>rel_wai / forced release</td><td>cancel command + ACK</td><td>強制解除ではなく協調停止</td></tr>
+<tr><td>memory pool</td><td>static buffer / bounded channel</td><td>heap ではなく容量を型と static で見積もる</td></tr>
+</tbody>
+</table>
+</div>
+<h2 id="移行時の考え方"><a class="header" href="#移行時の考え方">移行時の考え方</a></h2>
+<h3 id="1-タスク起動同期"><a class="header" href="#1-タスク起動同期">1. タスク起動同期</a></h3>
+<p>NORTi で <code>StaTaskSync</code> のように起動完了を待っていた場合、Embassy では <code>Status::Initialized</code> を ACK channel で返す構成にします。</p>
+<h3 id="2-メッセージ解放"><a class="header" href="#2-メッセージ解放">2. メッセージ解放</a></h3>
+<p>Embassy の <code>Channel</code> は値を move します。メモリプールを明示的に解放する設計とは異なりますが、大きいバッファは static pool / heapless buffer / owner task で扱います。</p>
+<h3 id="3-周期タイマ"><a class="header" href="#3-周期タイマ">3. 周期タイマ</a></h3>
+<p>周期ハンドラに処理を置くのではなく、task 内で次のように書きます。</p>
+<pre class="playground"><code class="language-rust"><span class="boring">#![allow(unused)]
+</span><span class="boring">fn main() {
+</span>loop {
+    do_periodic_step().await;
+    Timer::after_millis(10).await;
+}
+<span class="boring">}</span></code></pre>
+<h3 id="4-停止同期"><a class="header" href="#4-停止同期">4. 停止同期</a></h3>
+<p>停止要求と停止完了は分けます。</p>
+<pre><code class="language-text">Supervisor -&gt; Worker: Command::Stop
+Worker -&gt; Supervisor: Status::Stopped
+</code></pre>
+<div style="break-before: page; page-break-before: always;"></div>
+<h1 id="安全性チェックリスト"><a class="header" href="#安全性チェックリスト">安全性チェックリスト</a></h1>
+<p>Embassy で複雑な装置制御を行う場合のレビュー観点です。</p>
+<h2 id="executor--task-設計"><a class="header" href="#executor--task-設計">Executor / task 設計</a></h2>
+<ul>
+<li><input disabled="" type="checkbox"> thread-mode executor で足りる処理を interrupt executor に載せていない</li>
+<li><input disabled="" type="checkbox"> interrupt executor 上の task は短く、共有資源アクセスが限定されている</li>
+<li><input disabled="" type="checkbox"> <code>.await</code> なしの長時間ループがない</li>
+<li><input disabled="" type="checkbox"> task をイベントごとに大量 spawn していない</li>
+<li><input disabled="" type="checkbox"> <code>pool_size</code> 増加に頼る前に常駐 worker 化を検討している</li>
+</ul>
+<h2 id="キャンセル設計-1"><a class="header" href="#キャンセル設計-1">キャンセル設計</a></h2>
+<ul>
+<li><input disabled="" type="checkbox"> 停止要求と停止完了 ACK を分けている</li>
+<li><input disabled="" type="checkbox"> 長時間待ちの future は cancel future と <code>select</code> している</li>
+<li><input disabled="" type="checkbox"> 再 start と cancel の競合を state machine で扱っている</li>
+<li><input disabled="" type="checkbox"> 古い cancel signal が次の operation に誤適用されない設計になっている</li>
+<li><input disabled="" type="checkbox"> cleanup で peripheral を安全状態へ戻している</li>
+</ul>
+<h2 id="isr--peripheral"><a class="header" href="#isr--peripheral">ISR / peripheral</a></h2>
+<ul>
+<li><input disabled="" type="checkbox"> ISR で <code>await</code> していない</li>
+<li><input disabled="" type="checkbox"> ISR で blocking send していない</li>
+<li><input disabled="" type="checkbox"> <code>try_send</code> 失敗時の方針がある</li>
+<li><input disabled="" type="checkbox"> DMA / SPI / I2C / UART などの driver が cancel-safe か確認している</li>
+<li><input disabled="" type="checkbox"> cancel-safe 不明の driver は owner task に閉じ込めている</li>
+</ul>
+<h2 id="channel--buffer"><a class="header" href="#channel--buffer">Channel / buffer</a></h2>
+<ul>
+<li><input disabled="" type="checkbox"> Channel capacity を burst 条件から見積もっている</li>
+<li><input disabled="" type="checkbox"> overflow 時の drop / overwrite / fault 方針が明記されている</li>
+<li><input disabled="" type="checkbox"> 大きな payload を Channel で頻繁にコピーしていない</li>
+<li><input disabled="" type="checkbox"> static buffer の lifetime と所有権が明確</li>
+</ul>
+<h2 id="実機確認"><a class="header" href="#実機確認">実機確認</a></h2>
+<ul>
+<li><input disabled="" type="checkbox"> ボタン連打で command overflow しない</li>
+<li><input disabled="" type="checkbox"> cancel 直後に再 start しても状態が壊れない</li>
+<li><input disabled="" type="checkbox"> WDT / heartbeat が止まらない</li>
+<li><input disabled="" type="checkbox"> release build でタイミングを確認した</li>
+<li><input disabled="" type="checkbox"> defmt log だけに依存せず LED / GPIO などでも異常を観測できる</li>
+</ul>
+<div style="break-before: page; page-break-before: always;"></div>
+<h1 id="用語集"><a class="header" href="#用語集">用語集</a></h1>
+<h2 id="executor"><a class="header" href="#executor">Executor</a></h2>
+<p>async task を poll する実行器です。Embassy では thread-mode <code>Executor</code> と interrupt-mode <code>InterruptExecutor</code> が重要です。</p>
+<h2 id="spawner"><a class="header" href="#spawner">Spawner</a></h2>
+<p>task を executor に登録するための handle です。</p>
+<h2 id="thread-mode"><a class="header" href="#thread-mode">Thread-mode</a></h2>
+<p>Cortex-M の通常実行コンテキストです。Embassy の基本 executor はここで動きます。</p>
+<h2 id="interrupt-mode"><a class="header" href="#interrupt-mode">Interrupt-mode</a></h2>
+<p>割り込みコンテキストです。<code>InterruptExecutor</code> は task をこの文脈で poll します。</p>
+<h2 id="waker"><a class="header" href="#waker">Waker</a></h2>
+<p>待機中の future を再度 poll 可能にする通知機構です。</p>
+<h2 id="signal"><a class="header" href="#signal">Signal</a></h2>
+<p>単一 consumer 向けの最新値通知です。個別 cancel に向きます。</p>
+<h2 id="channel"><a class="header" href="#channel">Channel</a></h2>
+<p>bounded queue です。command / event / ACK に向きます。</p>
+<h2 id="watch"><a class="header" href="#watch">Watch</a></h2>
+<p>複数 receiver が最新 state を観測するための primitive です。</p>
+<h2 id="協調的キャンセル"><a class="header" href="#協調的キャンセル">協調的キャンセル</a></h2>
+<p>task 側が cancel 要求を検知し、安全な境界で処理を抜ける設計です。</p>
+<h2 id="cancel-safe"><a class="header" href="#cancel-safe">cancel-safe</a></h2>
+<p>future が途中で drop されても、所有する状態・buffer・peripheral が破綻しない性質です。</p>
+<div style="break-before: page; page-break-before: always;"></div>
+<h1 id="参考資料"><a class="header" href="#参考資料">参考資料</a></h1>
+<h2 id="embassy-公式一次情報"><a class="header" href="#embassy-公式一次情報">Embassy 公式・一次情報</a></h2>
+<ul>
+<li><a href="https://embassy.dev/book/">Embassy Book</a></li>
+<li><a href="https://embassy-rs.github.io/embassy-book/embassy/dev/stm32.html">Embassy STM32 HAL</a></li>
+<li><a href="https://docs.embassy.dev/embassy-stm32/git/stm32f767zi/index.html">embassy-stm32 STM32F767ZI docs</a></li>
+<li><a href="https://docs.rs/embassy-executor/latest/embassy_executor/">embassy-executor docs</a></li>
+<li><a href="https://docs.embassy.dev/embassy-executor/git/cortex-m/struct.InterruptExecutor.html">InterruptExecutor docs</a></li>
+<li><a href="https://docs.embassy.dev/embassy-sync/git/default/index.html">embassy-sync docs</a></li>
+<li><a href="https://docs.embassy.dev/embassy-futures/git/default/select/fn.select.html">embassy-futures select docs</a></li>
+</ul>
+<h2 id="実践資料"><a class="header" href="#実践資料">実践資料</a></h2>
+<ul>
+<li><a href="https://github.com/embassy-rs/embassy/tree/main/examples">Embassy examples</a></li>
+<li><a href="https://deepwiki.com/embassy-rs/embassy/6.3-examples">DeepWiki: Embassy examples</a></li>
+<li><a href="https://acalustra.com/embedded-rust-development-tips-with-embassy.html">Practical Embedded Rust Development Tips with Embassy</a></li>
+</ul>
+<h2 id="stm32f767zi--nucleo-f767zi"><a class="header" href="#stm32f767zi--nucleo-f767zi">STM32F767ZI / NUCLEO-F767ZI</a></h2>
+<ul>
+<li><a href="https://www.st.com/ja/microcontrollers-microprocessors/stm32f767zi.html">STM32F767ZI product page</a></li>
+<li><a href="https://www.st.com/ja/evaluation-tools/nucleo-f767zi.html">NUCLEO-F767ZI product page</a></li>
+</ul>
+<h2 id="rust-async-cancellation"><a class="header" href="#rust-async-cancellation">Rust async cancellation</a></h2>
+<ul>
+<li><a href="https://google.github.io/comprehensive-rust/concurrency/async-pitfalls/cancellation.html">Comprehensive Rust: Cancellation</a></li>
+<li><a href="https://tokio.rs/tokio/topics/shutdown">Tokio graceful shutdown</a></li>
+</ul>
+
+                    </main>
+
+                    <nav class="nav-wrapper" aria-label="Page navigation">
+                        <!-- Mobile navigation buttons -->
+
+
+                        <div style="clear: both"></div>
+                    </nav>
+                </div>
+            </div>
+
+            <nav class="nav-wide-wrapper" aria-label="Page navigation">
+
+            </nav>
+
+        </div>
+
+        <template id=fa-eye><span class=fa-svg><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 576 512"><!--! Font Awesome Free 6.2.0 by @fontawesome - https://fontawesome.com License - https://fontawesome.com/license/free (Icons: CC BY 4.0, Fonts: SIL OFL 1.1, Code: MIT License) Copyright 2022 Fonticons, Inc. --><path d="M288 32c-80.8 0-145.5 36.8-192.6 80.6C48.6 156 17.3 208 2.5 243.7c-3.3 7.9-3.3 16.7 0 24.6C17.3 304 48.6 356 95.4 399.4C142.5 443.2 207.2 480 288 480s145.5-36.8 192.6-80.6c46.8-43.5 78.1-95.4 93-131.1c3.3-7.9 3.3-16.7 0-24.6c-14.9-35.7-46.2-87.7-93-131.1C433.5 68.8 368.8 32 288 32zM432 256c0 79.5-64.5 144-144 144s-144-64.5-144-144s64.5-144 144-144s144 64.5 144 144zM288 192c0 35.3-28.7 64-64 64c-11.5 0-22.3-3-31.6-8.4c-.2 2.8-.4 5.5-.4 8.4c0 53 43 96 96 96s96-43 96-96s-43-96-96-96c-2.8 0-5.6 .1-8.4 .4c5.3 9.3 8.4 20.1 8.4 31.6z"/></svg></span></template>
+        <template id=fa-eye-slash><span class=fa-svg><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 640 512"><!--! Font Awesome Free 6.2.0 by @fontawesome - https://fontawesome.com License - https://fontawesome.com/license/free (Icons: CC BY 4.0, Fonts: SIL OFL 1.1, Code: MIT License) Copyright 2022 Fonticons, Inc. --><path d="M38.8 5.1C28.4-3.1 13.3-1.2 5.1 9.2S-1.2 34.7 9.2 42.9l592 464c10.4 8.2 25.5 6.3 33.7-4.1s6.3-25.5-4.1-33.7L525.6 386.7c39.6-40.6 66.4-86.1 79.9-118.4c3.3-7.9 3.3-16.7 0-24.6c-14.9-35.7-46.2-87.7-93-131.1C465.5 68.8 400.8 32 320 32c-68.2 0-125 26.3-169.3 60.8L38.8 5.1zM223.1 149.5C248.6 126.2 282.7 112 320 112c79.5 0 144 64.5 144 144c0 24.9-6.3 48.3-17.4 68.7L408 294.5c5.2-11.8 8-24.8 8-38.5c0-53-43-96-96-96c-2.8 0-5.6 .1-8.4 .4c5.3 9.3 8.4 20.1 8.4 31.6c0 10.2-2.4 19.8-6.6 28.3l-90.3-70.8zm223.1 298L373 389.9c-16.4 6.5-34.3 10.1-53 10.1c-79.5 0-144-64.5-144-144c0-6.9 .5-13.6 1.4-20.2L83.1 161.5C60.3 191.2 44 220.8 34.5 243.7c-3.3 7.9-3.3 16.7 0 24.6c14.9 35.7 46.2 87.7 93 131.1C174.5 443.2 239.2 480 320 480c47.8 0 89.9-12.9 126.2-32.5z"/></svg></span></template>
+        <template id=fa-copy><span class=fa-svg><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 512 512"><!--! Font Awesome Free 6.2.0 by @fontawesome - https://fontawesome.com License - https://fontawesome.com/license/free (Icons: CC BY 4.0, Fonts: SIL OFL 1.1, Code: MIT License) Copyright 2022 Fonticons, Inc. --><path d="M502.6 70.63l-61.25-61.25C435.4 3.371 427.2 0 418.7 0H255.1c-35.35 0-64 28.66-64 64l.0195 256C192 355.4 220.7 384 256 384h192c35.2 0 64-28.8 64-64V93.25C512 84.77 508.6 76.63 502.6 70.63zM464 320c0 8.836-7.164 16-16 16H255.1c-8.838 0-16-7.164-16-16L239.1 64.13c0-8.836 7.164-16 16-16h128L384 96c0 17.67 14.33 32 32 32h47.1V320zM272 448c0 8.836-7.164 16-16 16H63.1c-8.838 0-16-7.164-16-16L47.98 192.1c0-8.836 7.164-16 16-16H160V128H63.99c-35.35 0-64 28.65-64 64l.0098 256C.002 483.3 28.66 512 64 512h192c35.2 0 64-28.8 64-64v-32h-47.1L272 448z"/></svg></span></template>
+        <template id=fa-play><span class=fa-svg><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 384 512"><!--! Font Awesome Free 6.2.0 by @fontawesome - https://fontawesome.com License - https://fontawesome.com/license/free (Icons: CC BY 4.0, Fonts: SIL OFL 1.1, Code: MIT License) Copyright 2022 Fonticons, Inc. --><path d="M73 39c-14.8-9.1-33.4-9.4-48.5-.9S0 62.6 0 80V432c0 17.4 9.4 33.4 24.5 41.9s33.7 8.1 48.5-.9L361 297c14.3-8.7 23-24.2 23-41s-8.7-32.2-23-41L73 39z"/></svg></span></template>
+        <template id=fa-clock-rotate-left><span class=fa-svg><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 512 512"><!--! Font Awesome Free 6.2.0 by @fontawesome - https://fontawesome.com License - https://fontawesome.com/license/free (Icons: CC BY 4.0, Fonts: SIL OFL 1.1, Code: MIT License) Copyright 2022 Fonticons, Inc. --><path d="M75 75L41 41C25.9 25.9 0 36.6 0 57.9V168c0 13.3 10.7 24 24 24H134.1c21.4 0 32.1-25.9 17-41l-30.8-30.8C155 85.5 203 64 256 64c106 0 192 86 192 192s-86 192-192 192c-40.8 0-78.6-12.7-109.7-34.4c-14.5-10.1-34.4-6.6-44.6 7.9s-6.6 34.4 7.9 44.6C151.2 495 201.7 512 256 512c141.4 0 256-114.6 256-256S397.4 0 256 0C185.3 0 121.3 28.7 75 75zm181 53c-13.3 0-24 10.7-24 24V256c0 6.4 2.5 12.5 7 17l72 72c9.4 9.4 24.6 9.4 33.9 0s9.4-24.6 0-33.9l-65-65V152c0-13.3-10.7-24-24-24z"/></svg></span></template>
+
+
+
+        <script>
+            window.playground_copyable = true;
+        </script>
+
+
+        <script src="elasticlunr-ef4e11c1.min.js"></script>
+        <script src="mark-09e88c2c.min.js"></script>
+        <script src="searcher-09f2665d.js"></script>
+
+        <script src="clipboard-1626706a.min.js"></script>
+        <script src="highlight-abc7f01d.js"></script>
+        <script src="book-c22b7243.js"></script>
+
+        <!-- Custom JS scripts -->
+
+        <script>
+        window.addEventListener('load', function() {
+            window.setTimeout(window.print, 100);
+        });
+        </script>
+
+
+    </div>
+    </body>
+</html>
