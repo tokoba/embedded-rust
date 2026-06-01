@@ -171,6 +171,19 @@ dependencies = [
 ]
 
 [[package]]
+name = "cancellation"
+version = "0.1.0"
+dependencies = [
+ "cortex-m",
+ "cortex-m-rt",
+ "defmt 1.1.0",
+ "defmt-rtt",
+ "embassy-executor",
+ "embassy-stm32",
+ "panic-probe",
+]
+
+[[package]]
 name = "cargo-platform"
 version = "0.1.9"
 source = "registry+https://github.com/rust-lang/crates.io-index"
