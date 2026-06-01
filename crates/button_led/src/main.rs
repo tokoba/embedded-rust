@@ -5,21 +5,13 @@
 
 use core::default::Default;
 
-use button_led::button::events::ButtonEvent;
-use button_led::button::task::BUTTON_CH;
 use button_led::button::task::button_watcher_task;
-use button_led::led::config::{
-  LED_BLUE_BLINK_PERIOD_MS, LED_GREEN_BLINK_PERIOD_MS, LED_RED_BLINK_PERIOD_MS,
-};
-use button_led::led::states::LedControlState;
 use button_led::led::task::led_task;
-use button_led::led::*;
 use defmt::*;
 use embassy_executor::Spawner;
 use embassy_stm32::exti::{self, ExtiInput};
 use embassy_stm32::gpio::Pull;
-use embassy_stm32::peripherals::{PB0, PB7, PB14};
-use embassy_stm32::{Peri, bind_interrupts, interrupt};
+use embassy_stm32::{bind_interrupts, interrupt};
 use {defmt_rtt as _, panic_probe as _};
 
 // 割り込み検出部分

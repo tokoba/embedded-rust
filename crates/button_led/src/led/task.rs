@@ -23,7 +23,7 @@ pub async fn led_task(pb0: Peri<'static, PB0>, pb7: Peri<'static, PB7>, pb14: Pe
     match event {
       ButtonEvent::ShortPress => {
         led_green.on();
-        (&mut led_blue).off();
+        (led_blue).off();
         led_red.off();
       }
       ButtonEvent::LongPress => {
